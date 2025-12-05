@@ -1,4 +1,5 @@
 import { classNames } from '../../lib/utils'
+import { useCountUp, formatCountedCurrency } from '../../hooks/useCountUp'
 
 const colorSchemes = {
   blue: {
@@ -30,22 +31,42 @@ const colorSchemes = {
 export default function StatsCard({
   title,
   value,
+  numericValue,
+  isCurrency = false,
   icon: Icon,
   change,
   changeType = 'neutral',
   color = 'blue',
+  animate = false,
+  delay = 0,
 }) {
   const scheme = colorSchemes[color] || colorSchemes.blue
 
+  // Use count up animation if numeric value is provided and animation is enabled
+  const countedValue = useCountUp(
+    animate && numericValue !== undefined ? numericValue : 0,
+    1500 + delay,
+    animate && numericValue !== undefined
+  )
+
+  // Determine what to display
+  const displayValue = animate && numericValue !== undefined
+    ? (isCurrency ? formatCountedCurrency(countedValue) : Math.round(countedValue).toLocaleString())
+    : value
+
   return (
-    <div className={classNames(
-      'rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]',
-      scheme.bg
-    )}>
+    <div
+      className={classNames(
+        'rounded-xl p-6 shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-[1.02]',
+        scheme.bg,
+        animate ? 'animate-fade-in-up' : ''
+      )}
+      style={animate ? { animationDelay: `${delay}ms` } : {}}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className={classNames('text-sm font-medium', scheme.subtext)}>{title}</p>
-          <p className={classNames('mt-2 text-3xl font-bold', scheme.text)}>{value}</p>
+          <p className={classNames('mt-2 text-3xl font-bold', scheme.text)}>{displayValue}</p>
         </div>
         {Icon && (
           <div className={classNames('p-3 rounded-xl', scheme.iconBg)}>

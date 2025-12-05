@@ -18,9 +18,22 @@ export default function CheckoutForm({ store, paymentMethods }) {
     customer_email: '',
     customer_phone: '',
     customer_address: '',
+    source_platform: '',
     payment_method: paymentMethods[0]?.type || '',
     notes: '',
   })
+
+  const SOURCE_PLATFORMS = [
+    { id: 'snapchat', name: 'Snapchat', icon: '👻' },
+    { id: 'offerup', name: 'OfferUp', icon: '🏷️' },
+    { id: 'marketplace', name: 'Facebook Marketplace', icon: '🛒' },
+    { id: 'dhgate', name: 'DHgate', icon: '📦' },
+    { id: 'tiktok', name: 'TikTok', icon: '🎵' },
+    { id: 'instagram', name: 'Instagram', icon: '📸' },
+    { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
+    { id: 'direct', name: 'Direct/In-Person', icon: '🤝' },
+    { id: 'other', name: 'Other', icon: '📱' },
+  ]
 
   const handleChange = (field) => (e) => {
     setFormData(prev => ({ ...prev, [field]: e.target.value }))
@@ -29,6 +42,12 @@ export default function CheckoutForm({ store, paymentMethods }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+
+    if (!formData.source_platform) {
+      setError('Please select how you found us')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -192,6 +211,35 @@ export default function CheckoutForm({ store, paymentMethods }) {
               placeholder="123 Main St, City, State ZIP"
               rows={2}
             />
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                How did you find us? <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {SOURCE_PLATFORMS.map((platform) => (
+                  <label
+                    key={platform.id}
+                    className={`flex items-center gap-2 p-2 border rounded-lg cursor-pointer transition-all text-sm ${
+                      formData.source_platform === platform.id
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="source_platform"
+                      value={platform.id}
+                      checked={formData.source_platform === platform.id}
+                      onChange={handleChange('source_platform')}
+                      className="sr-only"
+                    />
+                    <span>{platform.icon}</span>
+                    <span className="truncate">{platform.name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

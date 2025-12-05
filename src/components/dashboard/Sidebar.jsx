@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import {
@@ -9,13 +10,23 @@ import {
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
   LinkIcon,
+  RectangleGroupIcon,
+  SparklesIcon,
+  TicketIcon,
+  ChatBubbleLeftRightIcon,
+  Square3Stack3DIcon,
+  SunIcon,
+  MoonIcon,
 } from '@heroicons/react/24/outline'
 import { classNames } from '../../lib/utils'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
   { name: 'Products', href: '/dashboard/products', icon: CubeIcon },
+  { name: 'Bundles', href: '/dashboard/bundles', icon: Square3Stack3DIcon },
   { name: 'Orders', href: '/dashboard/orders', icon: ShoppingCartIcon },
+  { name: 'Reviews', href: '/dashboard/reviews', icon: ChatBubbleLeftRightIcon },
+  { name: 'Discounts', href: '/dashboard/discounts', icon: TicketIcon },
   { name: 'Expenses', href: '/dashboard/expenses', icon: BanknotesIcon },
   { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBarIcon },
   { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
@@ -24,6 +35,27 @@ const navigation = [
 export default function Sidebar() {
   const { reseller, signOut } = useAuth()
   const navigate = useNavigate()
+  const [darkMode, setDarkMode] = useState(false)
+
+  // Load dark mode preference
+  useEffect(() => {
+    const saved = localStorage.getItem('darkMode')
+    if (saved === 'true') {
+      setDarkMode(true)
+      document.documentElement.classList.add('dark')
+    }
+  }, [])
+
+  const toggleDarkMode = () => {
+    const newValue = !darkMode
+    setDarkMode(newValue)
+    localStorage.setItem('darkMode', newValue.toString())
+    if (newValue) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
 
   const handleSignOut = async () => {
     await signOut()
@@ -43,6 +75,28 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
+        {/* Store Builder - Prominent CTA */}
+        <NavLink
+          to="/dashboard/store-builder"
+          className={({ isActive }) =>
+            classNames(
+              isActive
+                ? 'from-purple-600 to-pink-600 shadow-lg'
+                : 'from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-md hover:shadow-lg',
+              'flex items-center px-3 py-3 text-sm font-bold text-white bg-gradient-to-r rounded-xl transition-all duration-200 mb-3'
+            )
+          }
+        >
+          <div className="relative mr-3">
+            <RectangleGroupIcon className="h-5 w-5" />
+            <SparklesIcon className="h-3 w-3 absolute -top-1 -right-1 text-yellow-300" />
+          </div>
+          <div className="flex-1">
+            <span className="block">Store Builder</span>
+            <span className="text-[10px] font-normal text-purple-200">Drag & drop editor</span>
+          </div>
+        </NavLink>
+
         {navigation.map((item) => (
           <NavLink
             key={item.name}
@@ -64,7 +118,26 @@ export default function Sidebar() {
       </nav>
 
       <div className="p-4 border-t border-gray-200 space-y-2">
-        {storeUrl && (
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggleDarkMode}
+          className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          {darkMode ? (
+            <>
+              <SunIcon className="mr-3 h-5 w-5 text-yellow-500" />
+              Light Mode
+            </>
+          ) : (
+            <>
+              <MoonIcon className="mr-3 h-5 w-5 text-indigo-500" />
+              Dark Mode
+            </>
+          )}
+        </button>
+
+        {/* View Store Button */}
+        {storeUrl ? (
           <a
             href={storeUrl}
             target="_blank"
@@ -74,7 +147,16 @@ export default function Sidebar() {
             <LinkIcon className="mr-3 h-5 w-5" />
             View Your Store
           </a>
+        ) : (
+          <NavLink
+            to="/dashboard/settings"
+            className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+          >
+            <LinkIcon className="mr-3 h-5 w-5" />
+            Set Up Store URL
+          </NavLink>
         )}
+
         <button
           onClick={handleSignOut}
           className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"

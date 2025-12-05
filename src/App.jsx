@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
+import { UndoProvider } from './components/ui/UndoToast'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import DashboardLayout from './components/dashboard/DashboardLayout'
 
@@ -17,6 +18,10 @@ import Orders from './pages/dashboard/Orders'
 import Expenses from './pages/dashboard/Expenses'
 import Analytics from './pages/dashboard/Analytics'
 import Settings from './pages/dashboard/Settings'
+import StoreBuilderPage from './pages/dashboard/StoreBuilderPage'
+import DiscountCodes from './pages/dashboard/DiscountCodes'
+import Reviews from './pages/dashboard/Reviews'
+import Bundles from './pages/dashboard/Bundles'
 
 // Storefront pages
 import Store from './pages/storefront/Store'
@@ -25,8 +30,9 @@ import Checkout from './pages/storefront/Checkout'
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+      <UndoProvider>
+        <BrowserRouter>
+          <Routes>
           {/* Public home page */}
           <Route path="/" element={<Home />} />
 
@@ -50,6 +56,10 @@ function App() {
             <Route path="expenses" element={<Expenses />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="store-builder" element={<StoreBuilderPage />} />
+            <Route path="discounts" element={<DiscountCodes />} />
+            <Route path="reviews" element={<Reviews />} />
+            <Route path="bundles" element={<Bundles />} />
           </Route>
 
           {/* Public storefront routes */}
@@ -58,8 +68,9 @@ function App() {
 
           {/* 404 - redirect to home */}
           <Route path="*" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
+            </Routes>
+        </BrowserRouter>
+      </UndoProvider>
     </AuthProvider>
   )
 }

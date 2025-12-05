@@ -14,8 +14,21 @@ export default function OrderForm({
     customer_name: '',
     customer_phone: '',
     customer_email: '',
+    source_platform: '',
     notes: '',
   })
+
+  const SOURCE_PLATFORMS = [
+    { id: 'snapchat', name: 'Snapchat', icon: '👻' },
+    { id: 'offerup', name: 'OfferUp', icon: '🏷️' },
+    { id: 'marketplace', name: 'Facebook Marketplace', icon: '🛒' },
+    { id: 'dhgate', name: 'DHgate', icon: '📦' },
+    { id: 'tiktok', name: 'TikTok', icon: '🎵' },
+    { id: 'instagram', name: 'Instagram', icon: '📸' },
+    { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
+    { id: 'direct', name: 'Direct/In-Person', icon: '🤝' },
+    { id: 'other', name: 'Other', icon: '📱' },
+  ]
   const [selectedItems, setSelectedItems] = useState([])
   const [selectedProductId, setSelectedProductId] = useState('')
 
@@ -92,6 +105,11 @@ export default function OrderForm({
       return
     }
 
+    if (!formData.source_platform) {
+      alert('Please select where the customer found you')
+      return
+    }
+
     onSubmit({
       ...formData,
       items: selectedItems,
@@ -129,6 +147,34 @@ export default function OrderForm({
           onChange={handleChange('customer_email')}
           placeholder="customer@email.com"
         />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Where did this customer find you? <span className="text-red-500">*</span>
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {SOURCE_PLATFORMS.map((platform) => (
+              <label
+                key={platform.id}
+                className={`flex items-center gap-2 p-2.5 border rounded-lg cursor-pointer transition-all ${
+                  formData.source_platform === platform.id
+                    ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-500'
+                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="source_platform"
+                  value={platform.id}
+                  checked={formData.source_platform === platform.id}
+                  onChange={handleChange('source_platform')}
+                  className="sr-only"
+                />
+                <span className="text-lg">{platform.icon}</span>
+                <span className="text-sm font-medium truncate">{platform.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Product Selection */}

@@ -205,6 +205,52 @@ export function useAnalytics() {
     return Array.from(customerMap.values()).sort((a, b) => b.total_spent - a.total_spent)
   }, [filteredOrders])
 
+  // Platform/source analytics
+  const platformStats = useMemo(() => {
+    const platformMap = new Map()
+
+    const PLATFORM_INFO = {
+      snapchat: { name: 'Snapchat', icon: '👻', color: '#FFFC00' },
+      offerup: { name: 'OfferUp', icon: '🏷️', color: '#00B379' },
+      marketplace: { name: 'Facebook Marketplace', icon: '🛒', color: '#1877F2' },
+      dhgate: { name: 'DHgate', icon: '📦', color: '#FF6600' },
+      tiktok: { name: 'TikTok', icon: '🎵', color: '#000000' },
+      instagram: { name: 'Instagram', icon: '📸', color: '#E4405F' },
+      whatsapp: { name: 'WhatsApp', icon: '💬', color: '#25D366' },
+      direct: { name: 'Direct/In-Person', icon: '🤝', color: '#6B7280' },
+      other: { name: 'Other', icon: '📱', color: '#9CA3AF' },
+    }
+
+    filteredOrders.forEach(order => {
+      if (order.status === 'cancelled') return
+
+      const platform = order.source_platform || 'unknown'
+      const existing = platformMap.get(platform) || {
+        platform,
+        name: PLATFORM_INFO[platform]?.name || 'Unknown',
+        icon: PLATFORM_INFO[platform]?.icon || '❓',
+        color: PLATFORM_INFO[platform]?.color || '#6B7280',
+        orders: 0,
+        revenue: 0,
+        customers: new Set(),
+      }
+
+      existing.orders += 1
+      existing.revenue += parseFloat(order.total_amount)
+      existing.customers.add(order.customer_phone || order.customer_email)
+
+      platformMap.set(platform, existing)
+    })
+
+    // Convert Set to count and sort by orders
+    return Array.from(platformMap.values())
+      .map(p => ({
+        ...p,
+        customers: p.customers.size,
+      }))
+      .sort((a, b) => b.orders - a.orders)
+  }, [filteredOrders])
+
   return {
     loading,
     error,
@@ -212,6 +258,7 @@ export function useAnalytics() {
     productSales,
     salesByDay,
     customers,
+    platformStats,
     dateRange,
     setDateRange,
     refetch: fetchData,

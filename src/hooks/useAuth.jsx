@@ -68,18 +68,12 @@ export function AuthProvider({ children }) {
 
   const fetchOrCreateReseller = async (authUser) => {
     try {
-      // Try to fetch existing reseller profile with timeout
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 8000)
-
+      // Try to fetch existing reseller profile
       const { data, error } = await supabase
         .from('resellers')
         .select('*')
         .eq('id', authUser.id)
         .maybeSingle()
-        .abortSignal(controller.signal)
-
-      clearTimeout(timeoutId)
 
       if (data) {
         setReseller(data)
