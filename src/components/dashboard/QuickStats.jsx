@@ -100,9 +100,9 @@ export default function QuickStats() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-white rounded-xl p-4 border animate-pulse">
+          <div key={i} className="bg-white rounded-xl p-3 sm:p-4 border animate-pulse">
             <div className="h-4 bg-gray-200 rounded w-20 mb-2" />
             <div className="h-6 bg-gray-200 rounded w-16" />
           </div>
@@ -112,60 +112,60 @@ export default function QuickStats() {
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
       {/* Today's Orders */}
-      <div className="bg-white rounded-xl p-4 border shadow-sm">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-500">Today's Orders</span>
-          <ShoppingCartIcon className="h-5 w-5 text-blue-500" />
+      <div className="bg-white rounded-xl p-3 sm:p-4 border shadow-sm">
+        <div className="flex items-center justify-between mb-1 sm:mb-2">
+          <span className="text-xs sm:text-sm text-gray-500">Today's Orders</span>
+          <ShoppingCartIcon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 flex-shrink-0" />
         </div>
-        <div className="text-2xl font-bold text-gray-900">{stats.todayOrders}</div>
+        <div className="text-xl sm:text-2xl font-bold text-gray-900">{stats.todayOrders}</div>
       </div>
 
       {/* Today's Revenue */}
-      <div className="bg-white rounded-xl p-4 border shadow-sm">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-500">Today's Revenue</span>
-          <CurrencyDollarIcon className="h-5 w-5 text-green-500" />
+      <div className="bg-white rounded-xl p-3 sm:p-4 border shadow-sm">
+        <div className="flex items-center justify-between mb-1 sm:mb-2">
+          <span className="text-xs sm:text-sm text-gray-500">Today's Revenue</span>
+          <CurrencyDollarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0" />
         </div>
-        <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.todayRevenue)}</div>
+        <div className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{formatCurrency(stats.todayRevenue)}</div>
         {stats.revenueChange !== 0 && (
-          <div className={`flex items-center gap-1 text-xs mt-1 ${stats.revenueChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          <div className={`flex items-center gap-1 text-[10px] sm:text-xs mt-1 ${stats.revenueChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
             {stats.revenueChange > 0 ? (
               <ArrowTrendingUpIcon className="h-3 w-3" />
             ) : (
               <ArrowTrendingDownIcon className="h-3 w-3" />
             )}
-            {Math.abs(stats.revenueChange).toFixed(0)}% vs yesterday
+            <span className="truncate">{Math.abs(stats.revenueChange).toFixed(0)}% vs yesterday</span>
           </div>
         )}
       </div>
 
       {/* Pending Orders */}
-      <div className={`rounded-xl p-4 border shadow-sm ${stats.pendingOrders > 0 ? 'bg-yellow-50 border-yellow-200' : 'bg-white'}`}>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-500">Pending Orders</span>
-          <ClockIcon className={`h-5 w-5 ${stats.pendingOrders > 0 ? 'text-yellow-500' : 'text-gray-400'}`} />
+      <div className={`rounded-xl p-3 sm:p-4 border shadow-sm ${stats.pendingOrders > 0 ? 'bg-yellow-50 border-yellow-200' : 'bg-white'}`}>
+        <div className="flex items-center justify-between mb-1 sm:mb-2">
+          <span className="text-xs sm:text-sm text-gray-500">Pending</span>
+          <ClockIcon className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${stats.pendingOrders > 0 ? 'text-yellow-500' : 'text-gray-400'}`} />
         </div>
-        <div className={`text-2xl font-bold ${stats.pendingOrders > 0 ? 'text-yellow-700' : 'text-gray-900'}`}>
+        <div className={`text-xl sm:text-2xl font-bold ${stats.pendingOrders > 0 ? 'text-yellow-700' : 'text-gray-900'}`}>
           {stats.pendingOrders}
         </div>
         {stats.pendingOrders > 0 && (
-          <span className="text-xs text-yellow-600">Needs attention</span>
+          <span className="text-[10px] sm:text-xs text-yellow-600">Needs attention</span>
         )}
       </div>
 
       {/* Low Stock */}
-      <div className={`rounded-xl p-4 border shadow-sm ${stats.lowStockCount > 0 ? 'bg-red-50 border-red-200' : 'bg-white'}`}>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-500">Low Stock</span>
-          <ExclamationTriangleIcon className={`h-5 w-5 ${stats.lowStockCount > 0 ? 'text-red-500' : 'text-gray-400'}`} />
+      <div className={`rounded-xl p-3 sm:p-4 border shadow-sm ${stats.lowStockCount > 0 ? 'bg-red-50 border-red-200' : 'bg-white'}`}>
+        <div className="flex items-center justify-between mb-1 sm:mb-2">
+          <span className="text-xs sm:text-sm text-gray-500">Low Stock</span>
+          <ExclamationTriangleIcon className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${stats.lowStockCount > 0 ? 'text-red-500' : 'text-gray-400'}`} />
         </div>
-        <div className={`text-2xl font-bold ${stats.lowStockCount > 0 ? 'text-red-700' : 'text-gray-900'}`}>
+        <div className={`text-xl sm:text-2xl font-bold ${stats.lowStockCount > 0 ? 'text-red-700' : 'text-gray-900'}`}>
           {stats.lowStockCount}
         </div>
         {stats.lowStockCount > 0 && (
-          <span className="text-xs text-red-600">{stats.lowStockCount} product{stats.lowStockCount > 1 ? 's' : ''} low</span>
+          <span className="text-[10px] sm:text-xs text-red-600">{stats.lowStockCount} item{stats.lowStockCount > 1 ? 's' : ''}</span>
         )}
       </div>
     </div>

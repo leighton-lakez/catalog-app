@@ -57,27 +57,27 @@ export default function StatsCard({
   return (
     <div
       className={classNames(
-        'rounded-xl p-6 shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-[1.02]',
+        'rounded-xl p-3 sm:p-4 lg:p-6 shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-[1.02]',
         scheme.bg,
         animate ? 'animate-fade-in-up' : ''
       )}
       style={animate ? { animationDelay: `${delay}ms` } : {}}
     >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className={classNames('text-sm font-medium', scheme.subtext)}>{title}</p>
-          <p className={classNames('mt-2 text-3xl font-bold', scheme.text)}>{displayValue}</p>
+      <div className="flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <p className={classNames('text-xs sm:text-sm font-medium truncate', scheme.subtext)}>{title}</p>
+          <p className={classNames('mt-1 sm:mt-2 text-lg sm:text-xl lg:text-3xl font-bold truncate', scheme.text)}>{displayValue}</p>
         </div>
         {Icon && (
-          <div className={classNames('p-3 rounded-xl', scheme.iconBg)}>
-            <Icon className={classNames('h-8 w-8', scheme.text)} />
+          <div className={classNames('p-2 sm:p-3 rounded-xl flex-shrink-0', scheme.iconBg)}>
+            <Icon className={classNames('h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8', scheme.text)} />
           </div>
         )}
       </div>
       {change && (
-        <div className="mt-4">
+        <div className="mt-2 sm:mt-4">
           <span className={classNames(
-            'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold',
+            'inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold',
             'bg-white/20 text-white'
           )}>
             {change}

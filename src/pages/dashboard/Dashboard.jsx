@@ -72,23 +72,23 @@ export default function Dashboard() {
 
       <div className={showWelcome ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
         <div className="mb-6">
-          <h1 className={`text-2xl font-bold text-gray-900 ${animateStats ? 'animate-slide-down' : ''}`}>
+          <h1 className={`text-xl sm:text-2xl font-bold text-gray-900 ${animateStats ? 'animate-slide-down' : ''}`}>
             Welcome back, {reseller?.store_name || 'Reseller'}!
           </h1>
           {storeUrl && (
-            <div className={`mt-2 flex items-center gap-2 ${animateStats ? 'animate-fade-in' : ''}`} style={{ animationDelay: '100ms' }}>
-              <span className="text-gray-500">Your store:</span>
+            <div className={`mt-2 flex flex-wrap items-center gap-2 ${animateStats ? 'animate-fade-in' : ''}`} style={{ animationDelay: '100ms' }}>
+              <span className="text-gray-500 text-sm sm:text-base">Your store:</span>
               <a
                 href={storeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-blue-600 hover:underline text-sm sm:text-base break-all"
               >
                 {storeUrl}
               </a>
               <button
                 onClick={copyStoreUrl}
-                className="p-1 hover:bg-gray-100 rounded"
+                className="p-1 hover:bg-gray-100 rounded flex-shrink-0"
                 title="Copy link"
               >
                 {copied ? (
@@ -107,9 +107,9 @@ export default function Dashboard() {
         </div>
 
         {/* Sales Goal + Stats Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="lg:col-span-2">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
               <StatsCard
                 title="Total Products"
                 value={loading ? '-' : stats.totalProducts}
@@ -163,13 +163,13 @@ export default function Dashboard() {
         </div>
 
         {/* Charts */}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '500ms' }}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '500ms' }}>
           <RevenueChart data={salesByDay} />
           <TopProducts productSales={productSales} />
         </div>
 
         {/* Platform Stats */}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '600ms' }}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '600ms' }}>
           <PlatformStats platformStats={platformStats} />
         </div>
       </div>

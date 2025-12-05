@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import {
   HomeIcon,
@@ -17,6 +17,7 @@ import {
   Square3Stack3DIcon,
   SunIcon,
   MoonIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { classNames } from '../../lib/utils'
 
@@ -32,10 +33,18 @@ const navigation = [
   { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }) {
   const { reseller, signOut } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const [darkMode, setDarkMode] = useState(false)
+
+  // Close sidebar on navigation (mobile)
+  useEffect(() => {
+    if (onClose) {
+      onClose()
+    }
+  }, [location.pathname])
 
   // Load dark mode preference
   useEffect(() => {
@@ -68,10 +77,23 @@ export default function Sidebar() {
     <div className="flex flex-col w-64 bg-white border-r border-gray-200 min-h-screen">
       {/* Header with gradient */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-5">
-        <h1 className="text-xl font-bold text-white truncate">
-          {reseller?.store_name || 'My Catalog'}
-        </h1>
-        <p className="text-blue-100 text-sm mt-1">Reseller Dashboard</p>
+        <div className="flex items-center justify-between">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl font-bold text-white truncate">
+              {reseller?.store_name || 'My Catalog'}
+            </h1>
+            <p className="text-blue-100 text-sm mt-1">Reseller Dashboard</p>
+          </div>
+          {/* Close button for mobile */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="lg:hidden p-1 rounded-lg hover:bg-white/20 text-white"
+            >
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+          )}
+        </div>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
