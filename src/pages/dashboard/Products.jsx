@@ -126,21 +126,21 @@ export default function Products() {
 
       {/* Category Filter Banner */}
       {filterCategory && activeTab === 'products' && (
-        <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mb-6">
-          <div className="flex items-center gap-2">
-            <FolderIcon className="h-5 w-5 text-blue-600" />
-            <span className="text-blue-800 font-medium">
-              Showing: {categories.find(c => c.id === filterCategory)?.name}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 sm:px-4 py-3 mb-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            <FolderIcon className="h-5 w-5 text-blue-600 flex-shrink-0" />
+            <span className="text-blue-800 font-medium text-sm sm:text-base">
+              {categories.find(c => c.id === filterCategory)?.name}
             </span>
-            <span className="text-blue-600 text-sm">
-              ({products.filter(p => p.category_id === filterCategory).length} products)
+            <span className="text-blue-600 text-xs sm:text-sm">
+              ({products.filter(p => p.category_id === filterCategory).length})
             </span>
           </div>
           <button
             onClick={() => setFilterCategory(null)}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
-            Clear filter
+            Clear
           </button>
         </div>
       )}
@@ -162,9 +162,9 @@ export default function Products() {
       {/* Categories Tab */}
       {activeTab === 'categories' && (
         <div>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Manage Categories</h2>
-            <Button onClick={() => handleOpenCategoryModal()}>
+            <Button onClick={() => handleOpenCategoryModal()} className="w-full sm:w-auto">
               <PlusIcon className="h-5 w-5 mr-1" />
               Add Category
             </Button>

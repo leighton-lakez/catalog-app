@@ -216,11 +216,11 @@ export default function CheckoutForm({ store, paymentMethods }) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 How did you find us? <span className="text-red-500">*</span>
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {SOURCE_PLATFORMS.map((platform) => (
                   <label
                     key={platform.id}
-                    className={`flex items-center gap-2 p-2 border rounded-lg cursor-pointer transition-all text-sm ${
+                    className={`flex items-center gap-1 sm:gap-2 p-2 border rounded-lg cursor-pointer transition-all text-xs sm:text-sm ${
                       formData.source_platform === platform.id
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 hover:border-gray-300'

@@ -16,6 +16,9 @@ export default function Modal({
     xl: 'max-w-4xl',
   }
 
+  // Mobile-first: full width on small screens
+  const mobileClass = 'w-[calc(100%-2rem)] sm:w-full'
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -42,7 +45,7 @@ export default function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`w-full ${sizes[size]} transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}>
+              <Dialog.Panel className={`${mobileClass} ${sizes[size]} transform overflow-hidden rounded-2xl bg-white p-4 sm:p-6 text-left align-middle shadow-xl transition-all max-h-[90vh] overflow-y-auto`}>
                 <div className="flex items-center justify-between mb-4">
                   <Dialog.Title as="h3" className="text-lg font-semibold text-gray-900">
                     {title}

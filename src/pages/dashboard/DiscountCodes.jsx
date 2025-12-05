@@ -118,12 +118,12 @@ export default function DiscountCodes() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Discount Codes</h1>
-          <p className="text-gray-500 mt-1">Create and manage promotional codes for your store</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Discount Codes</h1>
+          <p className="text-gray-500 text-sm sm:text-base mt-1">Create and manage promotional codes</p>
         </div>
-        <Button onClick={() => handleOpenModal()}>
+        <Button onClick={() => handleOpenModal()} className="w-full sm:w-auto">
           <PlusIcon className="h-5 w-5 mr-2" />
           Create Code
         </Button>
@@ -142,102 +142,166 @@ export default function DiscountCodes() {
           }
         />
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Discount</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usage</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Expires</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {discountCodes.map((code) => {
-                const isExpired = code.expires_at && new Date(code.expires_at) < new Date()
-                const isMaxedOut = code.max_uses && code.times_used >= code.max_uses
-
-                return (
-                  <tr key={code.id} className={!code.is_active || isExpired || isMaxedOut ? 'bg-gray-50' : ''}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded">
-                          {code.code}
-                        </span>
-                        <button
-                          onClick={() => handleCopyCode(code.code)}
-                          className="text-gray-400 hover:text-gray-600"
-                        >
-                          {copiedCode === code.code ? (
-                            <CheckIcon className="h-4 w-4 text-green-500" />
-                          ) : (
-                            <ClipboardIcon className="h-4 w-4" />
-                          )}
-                        </button>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="font-semibold text-green-600">
-                        {code.type === 'percentage' && `${code.value}% OFF`}
-                        {code.type === 'fixed' && `${formatCurrency(code.value)} OFF`}
-                        {code.type === 'free_shipping' && 'Free Shipping'}
+        <>
+          {/* Mobile Card View */}
+          <div className="sm:hidden space-y-3">
+            {discountCodes.map((code) => {
+              const isExpired = code.expires_at && new Date(code.expires_at) < new Date()
+              const isMaxedOut = code.max_uses && code.times_used >= code.max_uses
+              return (
+                <div key={code.id} className={`bg-white rounded-xl border p-4 ${!code.is_active || isExpired || isMaxedOut ? 'opacity-60' : ''}`}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded text-sm">
+                        {code.code}
                       </span>
-                      {code.min_order_amount > 0 && (
-                        <span className="text-xs text-gray-500 block">
-                          Min. order: {formatCurrency(code.min_order_amount)}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {code.times_used} / {code.max_uses || '∞'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {code.expires_at ? formatDate(code.expires_at) : 'Never'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {isExpired ? (
-                        <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
-                          Expired
-                        </span>
-                      ) : isMaxedOut ? (
-                        <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
-                          Maxed Out
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => toggleActive(code.id, !code.is_active)}
-                          className={`px-2 py-1 text-xs font-medium rounded-full ${
-                            code.is_active
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-700'
-                          }`}
-                        >
-                          {code.is_active ? 'Active' : 'Inactive'}
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
                       <button
-                        onClick={() => handleOpenModal(code)}
-                        className="text-blue-600 hover:text-blue-700 mr-3"
+                        onClick={() => handleCopyCode(code.code)}
+                        className="text-gray-400 hover:text-gray-600"
                       >
+                        {copiedCode === code.code ? (
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <ClipboardIcon className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                    {isExpired ? (
+                      <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">Expired</span>
+                    ) : isMaxedOut ? (
+                      <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">Maxed</span>
+                    ) : (
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${code.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                        {code.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-semibold text-green-600">
+                      {code.type === 'percentage' && `${code.value}% OFF`}
+                      {code.type === 'fixed' && `${formatCurrency(code.value)} OFF`}
+                      {code.type === 'free_shipping' && 'Free Shipping'}
+                    </span>
+                    <span className="text-sm text-gray-500">Used: {code.times_used}/{code.max_uses || '∞'}</span>
+                  </div>
+                  <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                    <span className="text-xs text-gray-400">
+                      {code.expires_at ? `Expires ${formatDate(code.expires_at)}` : 'Never expires'}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleOpenModal(code)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg">
                         <PencilIcon className="h-4 w-4" />
                       </button>
-                      <button
-                        onClick={() => handleDelete(code.id)}
-                        className="text-red-600 hover:text-red-700"
-                      >
+                      <button onClick={() => handleDelete(code.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg">
                         <TrashIcon className="h-4 w-4" />
                       </button>
-                    </td>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden sm:block bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                    <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Discount</th>
+                    <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Usage</th>
+                    <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">Expires</th>
+                    <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {discountCodes.map((code) => {
+                    const isExpired = code.expires_at && new Date(code.expires_at) < new Date()
+                    const isMaxedOut = code.max_uses && code.times_used >= code.max_uses
+
+                    return (
+                      <tr key={code.id} className={!code.is_active || isExpired || isMaxedOut ? 'bg-gray-50' : ''}>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded">
+                              {code.code}
+                            </span>
+                            <button
+                              onClick={() => handleCopyCode(code.code)}
+                              className="text-gray-400 hover:text-gray-600"
+                            >
+                              {copiedCode === code.code ? (
+                                <CheckIcon className="h-4 w-4 text-green-500" />
+                              ) : (
+                                <ClipboardIcon className="h-4 w-4" />
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                          <span className="font-semibold text-green-600">
+                            {code.type === 'percentage' && `${code.value}% OFF`}
+                            {code.type === 'fixed' && `${formatCurrency(code.value)} OFF`}
+                            {code.type === 'free_shipping' && 'Free Shipping'}
+                          </span>
+                          {code.min_order_amount > 0 && (
+                            <span className="text-xs text-gray-500 block">
+                              Min: {formatCurrency(code.min_order_amount)}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 hidden md:table-cell">
+                          {code.times_used} / {code.max_uses || '∞'}
+                        </td>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 hidden lg:table-cell">
+                          {code.expires_at ? formatDate(code.expires_at) : 'Never'}
+                        </td>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                          {isExpired ? (
+                            <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
+                              Expired
+                            </span>
+                          ) : isMaxedOut ? (
+                            <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
+                              Maxed Out
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => toggleActive(code.id, !code.is_active)}
+                              className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                code.is_active
+                                  ? 'bg-green-100 text-green-700'
+                                  : 'bg-gray-100 text-gray-700'
+                              }`}
+                            >
+                              {code.is_active ? 'Active' : 'Inactive'}
+                            </button>
+                          )}
+                        </td>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right">
+                          <button
+                            onClick={() => handleOpenModal(code)}
+                            className="text-blue-600 hover:text-blue-700 mr-3"
+                          >
+                            <PencilIcon className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(code.id)}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <TrashIcon className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
       )}
 
       {/* Create/Edit Modal */}

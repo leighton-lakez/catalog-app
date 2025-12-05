@@ -19,33 +19,33 @@ export default function Settings() {
       {/* Page Builder Banner */}
       <Link
         to="/dashboard/store-builder"
-        className="mb-6 flex items-center justify-between p-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white hover:from-purple-700 hover:to-blue-700 transition-all"
+        className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white hover:from-purple-700 hover:to-blue-700 transition-all"
       >
         <div className="flex items-center gap-3">
-          <RectangleGroupIcon className="h-8 w-8" />
+          <RectangleGroupIcon className="h-6 sm:h-8 w-6 sm:w-8 flex-shrink-0" />
           <div>
-            <h3 className="font-bold text-lg">Page Builder</h3>
-            <p className="text-purple-100 text-sm">Build your store with drag-and-drop sections like Shopify</p>
+            <h3 className="font-bold text-base sm:text-lg">Page Builder</h3>
+            <p className="text-purple-100 text-xs sm:text-sm">Build your store with drag-and-drop</p>
           </div>
         </div>
-        <span className="px-4 py-2 bg-white/20 rounded-lg font-medium">
+        <span className="px-4 py-2 bg-white/20 rounded-lg font-medium text-sm text-center">
           Open Builder →
         </span>
       </Link>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200">
+      <div className="flex gap-1 sm:gap-2 mb-6 border-b border-gray-200 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === tab.id
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
-            <tab.icon className="h-5 w-5" />
+            <tab.icon className="h-4 sm:h-5 w-4 sm:w-5" />
             {tab.name}
           </button>
         ))}
