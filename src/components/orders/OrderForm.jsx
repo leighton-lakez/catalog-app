@@ -30,16 +30,15 @@ export default function OrderForm({
     { id: 'other', name: 'Other', icon: '📱' },
   ]
   const [selectedItems, setSelectedItems] = useState([])
-  const [selectedProductId, setSelectedProductId] = useState('')
 
   const handleChange = (field) => (e) => {
     setFormData(prev => ({ ...prev, [field]: e.target.value }))
   }
 
-  const addProduct = () => {
-    if (!selectedProductId) return
+  const addProduct = (productId) => {
+    if (!productId) return
 
-    const product = products.find(p => p.id === selectedProductId)
+    const product = products.find(p => p.id === productId)
     if (!product) return
 
     const existing = selectedItems.find(item => item.id === product.id)
@@ -62,7 +61,14 @@ export default function OrderForm({
         stock_quantity: product.stock_quantity,
       }])
     }
-    setSelectedProductId('')
+  }
+
+  const handleProductSelect = (e) => {
+    const productId = e.target.value
+    if (productId) {
+      addProduct(productId)
+      e.target.value = '' // Reset dropdown
+    }
   }
 
   const updatePrice = (productId, newPrice) => {
@@ -181,24 +187,19 @@ export default function OrderForm({
       <div className="space-y-4">
         <h3 className="font-medium text-gray-900">Order Items</h3>
 
-        <div className="flex gap-2">
-          <select
-            value={selectedProductId}
-            onChange={(e) => setSelectedProductId(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            <option value="">Select a product...</option>
-            {availableProducts.map(product => (
-              <option key={product.id} value={product.id}>
-                {product.name} - {formatCurrency(product.price)}
-                {product.stock_quantity >= 0 ? ` (${product.stock_quantity} in stock)` : ''}
-              </option>
-            ))}
-          </select>
-          <Button type="button" onClick={addProduct} disabled={!selectedProductId}>
-            <PlusIcon className="h-5 w-5" />
-          </Button>
-        </div>
+        <select
+          onChange={handleProductSelect}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          defaultValue=""
+        >
+          <option value="">+ Add a product...</option>
+          {availableProducts.map(product => (
+            <option key={product.id} value={product.id}>
+              {product.name} - {formatCurrency(product.price)}
+              {product.stock_quantity >= 0 ? ` (${product.stock_quantity} in stock)` : ''}
+            </option>
+          ))}
+        </select>
 
         {/* Selected Items */}
         {selectedItems.length > 0 ? (
