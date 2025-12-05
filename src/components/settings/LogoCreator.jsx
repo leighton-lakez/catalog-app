@@ -517,13 +517,13 @@ export default function LogoCreator() {
           <label className="block text-sm font-medium text-gray-700 mb-2">Generated Logos</label>
 
           {generatedLogos.length === 0 ? (
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center">
-              <SparklesIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">Configure your preferences and click Generate</p>
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 sm:p-12 text-center">
+              <SparklesIcon className="h-10 sm:h-12 w-10 sm:w-12 text-gray-300 mx-auto mb-3 sm:mb-4" />
+              <p className="text-gray-500 text-sm">Configure your preferences and click Generate</p>
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {generatedLogos.map((logo) => (
                   <button
                     key={logo.id}
@@ -549,34 +549,36 @@ export default function LogoCreator() {
 
               {/* Selected Logo Preview */}
               {selectedLogo && (
-                <div className="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                <div className="border border-gray-200 rounded-xl p-3 sm:p-4 bg-gray-50">
                   <p className="text-sm font-medium text-gray-700 mb-3">Selected Logo</p>
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
                     <div
-                      className="w-24 h-24 bg-white rounded-lg p-2 border"
+                      className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-lg p-2 border flex-shrink-0"
                       dangerouslySetInnerHTML={{ __html: selectedLogo.svg }}
                     />
-                    <div className="flex-1 space-y-2">
-                      <Button
-                        onClick={() => downloadLogo(selectedLogo.svg, 'svg')}
-                        variant="secondary"
-                        className="w-full text-sm"
-                      >
-                        <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
-                        Download SVG
-                      </Button>
-                      <Button
-                        onClick={() => downloadLogo(selectedLogo.svg, 'png')}
-                        variant="secondary"
-                        className="w-full text-sm"
-                      >
-                        <DocumentArrowDownIcon className="h-4 w-4 mr-1" />
-                        Download PNG
-                      </Button>
+                    <div className="w-full sm:flex-1 space-y-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-1 gap-2">
+                        <Button
+                          onClick={() => downloadLogo(selectedLogo.svg, 'svg')}
+                          variant="secondary"
+                          className="w-full text-xs sm:text-sm"
+                        >
+                          <DocumentArrowDownIcon className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Download</span> SVG
+                        </Button>
+                        <Button
+                          onClick={() => downloadLogo(selectedLogo.svg, 'png')}
+                          variant="secondary"
+                          className="w-full text-xs sm:text-sm"
+                        >
+                          <DocumentArrowDownIcon className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Download</span> PNG
+                        </Button>
+                      </div>
                       <Button
                         onClick={setAsStoreLogo}
                         loading={isSaving}
-                        className="w-full text-sm bg-gradient-to-r from-purple-600 to-pink-600"
+                        className="w-full text-xs sm:text-sm bg-gradient-to-r from-purple-600 to-pink-600"
                       >
                         <CheckIcon className="h-4 w-4 mr-1" />
                         Set as Store Logo
