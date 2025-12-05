@@ -3,6 +3,7 @@ import { AuthProvider } from './hooks/useAuth'
 import { UndoProvider } from './components/ui/UndoToast'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import DashboardLayout from './components/dashboard/DashboardLayout'
+import PWAInstallPrompt from './components/ui/PWAInstallPrompt'
 
 // Public pages
 import Home from './pages/Home'
@@ -32,6 +33,7 @@ function App() {
     <AuthProvider>
       <UndoProvider>
         <BrowserRouter>
+          <PWAInstallPrompt />
           <Routes>
           {/* Public home page */}
           <Route path="/" element={<Home />} />

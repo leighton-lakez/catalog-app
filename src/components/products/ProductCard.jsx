@@ -50,68 +50,68 @@ export default function ProductCard({
         )}
 
         {/* Status badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1">
+        <div className="absolute top-2 left-2 flex flex-col gap-1.5">
           {!bulkMode && !product.is_active && (
-            <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">
+            <span className="bg-gray-800/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg font-medium">
               Inactive
             </span>
           )}
           {isOutOfStock && (
-            <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
+            <span className="bg-red-500/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg font-medium">
               Out of Stock
             </span>
           )}
           {isLowStock && !isOutOfStock && (
-            <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+            <span className="bg-yellow-500/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg font-medium flex items-center gap-1">
               <ExclamationTriangleIcon className="h-3 w-3" />
-              Low Stock
+              Low
             </span>
           )}
         </div>
 
         {/* Action buttons - always visible on mobile, hover on desktop */}
         {!bulkMode && (
-          <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex gap-1">
+          <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex gap-1.5">
             <button
               onClick={(e) => { e.stopPropagation(); onDuplicate?.(product) }}
-              className="p-2 bg-white rounded-lg shadow hover:bg-gray-50"
+              className="p-2.5 bg-white/90 backdrop-blur-sm rounded-xl shadow-sm hover:bg-white hover:shadow-md transition-all"
               title="Duplicate"
             >
               <DocumentDuplicateIcon className="h-4 w-4 text-gray-600" />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); onEdit(product) }}
-              className="p-2 bg-white rounded-lg shadow hover:bg-gray-50"
+              className="p-2.5 bg-white/90 backdrop-blur-sm rounded-xl shadow-sm hover:bg-white hover:shadow-md transition-all"
               title="Edit"
             >
               <PencilIcon className="h-4 w-4 text-gray-600" />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(product) }}
-              className="p-2 bg-white rounded-lg shadow hover:bg-red-50"
+              className="p-2.5 bg-white/90 backdrop-blur-sm rounded-xl shadow-sm hover:bg-red-50 hover:shadow-md transition-all"
               title="Delete"
             >
-              <TrashIcon className="h-4 w-4 text-red-600" />
+              <TrashIcon className="h-4 w-4 text-red-500" />
             </button>
           </div>
         )}
       </div>
 
-      <h3 className="font-medium text-gray-900 truncate">{product.name}</h3>
+      <h3 className="font-semibold text-gray-900 truncate text-base">{product.name}</h3>
 
-      <div className="mt-1 flex items-center justify-between">
-        <span className="text-lg font-semibold text-blue-600">
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-xl font-bold text-blue-600">
           {formatCurrency(product.price)}
         </span>
         {product.stock_quantity !== -1 && (
-          <span className="text-sm text-gray-500">
-            {product.stock_quantity} in stock
+          <span className="text-sm text-gray-400 bg-gray-50 px-2 py-0.5 rounded-lg">
+            {product.stock_quantity} left
           </span>
         )}
       </div>
 
       {product.category && (
-        <span className="mt-2 inline-block text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+        <span className="mt-2 inline-block text-xs bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg font-medium">
           {product.category.name}
         </span>
       )}

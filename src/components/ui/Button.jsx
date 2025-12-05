@@ -1,17 +1,17 @@
 import { classNames } from '../../lib/utils'
 
 const variants = {
-  primary: 'bg-blue-600 hover:bg-blue-700 text-white',
-  secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800',
-  danger: 'bg-red-600 hover:bg-red-700 text-white',
-  outline: 'border border-gray-300 hover:bg-gray-50 text-gray-700',
-  ghost: 'hover:bg-gray-100 text-gray-700',
+  primary: 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm',
+  secondary: 'bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-800',
+  danger: 'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white shadow-sm',
+  outline: 'border border-gray-200 hover:bg-gray-50 active:bg-gray-100 text-gray-700',
+  ghost: 'hover:bg-gray-100 active:bg-gray-200 text-gray-700',
 }
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2',
-  lg: 'px-6 py-3 text-lg',
+  sm: 'px-3 py-2 text-sm min-h-[36px]',
+  md: 'px-4 py-2.5 min-h-[44px]',
+  lg: 'px-6 py-3 text-lg min-h-[52px]',
 }
 
 export default function Button({
