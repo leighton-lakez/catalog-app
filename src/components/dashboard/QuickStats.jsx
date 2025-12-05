@@ -112,69 +112,72 @@ export default function QuickStats() {
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* Today's Orders */}
-      <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-gray-500">Today's Orders</span>
-          <div className="p-2 bg-blue-50 rounded-xl">
-            <ShoppingCartIcon className="h-5 w-5 text-blue-500" />
+    <div>
+      <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Today</h2>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {/* Today's Orders */}
+        <div className="bg-white rounded-xl p-3 sm:p-4 border border-gray-100 shadow-sm">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-xs sm:text-sm text-gray-500">Orders</span>
+            <div className="p-1.5 sm:p-2 bg-blue-50 rounded-lg sm:rounded-xl">
+              <ShoppingCartIcon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
+            </div>
           </div>
+          <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.todayOrders}</div>
         </div>
-        <div className="text-3xl font-bold text-gray-900">{stats.todayOrders}</div>
-      </div>
 
-      {/* Today's Revenue */}
-      <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-gray-500">Today's Revenue</span>
-          <div className="p-2 bg-green-50 rounded-xl">
-            <CurrencyDollarIcon className="h-5 w-5 text-green-500" />
+        {/* Today's Revenue */}
+        <div className="bg-white rounded-xl p-3 sm:p-4 border border-gray-100 shadow-sm">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-xs sm:text-sm text-gray-500">Revenue</span>
+            <div className="p-1.5 sm:p-2 bg-green-50 rounded-lg sm:rounded-xl">
+              <CurrencyDollarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+            </div>
           </div>
+          <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{formatCurrency(stats.todayRevenue)}</div>
+          {stats.revenueChange !== 0 && (
+            <div className={`flex items-center gap-1 text-xs mt-1 sm:mt-2 ${stats.revenueChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {stats.revenueChange > 0 ? (
+                <ArrowTrendingUpIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+              ) : (
+                <ArrowTrendingDownIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+              )}
+              <span className="truncate">{Math.abs(stats.revenueChange).toFixed(0)}% vs yesterday</span>
+            </div>
+          )}
         </div>
-        <div className="text-2xl sm:text-3xl font-bold text-gray-900">{formatCurrency(stats.todayRevenue)}</div>
-        {stats.revenueChange !== 0 && (
-          <div className={`flex items-center gap-1 text-xs mt-2 ${stats.revenueChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {stats.revenueChange > 0 ? (
-              <ArrowTrendingUpIcon className="h-4 w-4" />
-            ) : (
-              <ArrowTrendingDownIcon className="h-4 w-4" />
-            )}
-            <span>{Math.abs(stats.revenueChange).toFixed(0)}% vs yesterday</span>
-          </div>
-        )}
-      </div>
 
-      {/* Pending Orders */}
-      <div className={`rounded-2xl p-4 border shadow-sm ${stats.pendingOrders > 0 ? 'bg-yellow-50 border-yellow-200' : 'bg-white border-gray-100'}`}>
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-gray-500">Pending</span>
-          <div className={`p-2 rounded-xl ${stats.pendingOrders > 0 ? 'bg-yellow-100' : 'bg-gray-50'}`}>
-            <ClockIcon className={`h-5 w-5 ${stats.pendingOrders > 0 ? 'text-yellow-600' : 'text-gray-400'}`} />
+        {/* Pending Orders */}
+        <div className={`rounded-xl p-3 sm:p-4 border shadow-sm ${stats.pendingOrders > 0 ? 'bg-yellow-50 border-yellow-200' : 'bg-white border-gray-100'}`}>
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-xs sm:text-sm text-gray-500">Pending</span>
+            <div className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl ${stats.pendingOrders > 0 ? 'bg-yellow-100' : 'bg-gray-50'}`}>
+              <ClockIcon className={`h-4 w-4 sm:h-5 sm:w-5 ${stats.pendingOrders > 0 ? 'text-yellow-600' : 'text-gray-400'}`} />
+            </div>
           </div>
+          <div className={`text-2xl sm:text-3xl font-bold ${stats.pendingOrders > 0 ? 'text-yellow-700' : 'text-gray-900'}`}>
+            {stats.pendingOrders}
+          </div>
+          {stats.pendingOrders > 0 && (
+            <span className="text-xs text-yellow-600 mt-1 block">Needs attention</span>
+          )}
         </div>
-        <div className={`text-3xl font-bold ${stats.pendingOrders > 0 ? 'text-yellow-700' : 'text-gray-900'}`}>
-          {stats.pendingOrders}
-        </div>
-        {stats.pendingOrders > 0 && (
-          <span className="text-xs text-yellow-600 mt-1 block">Needs attention</span>
-        )}
-      </div>
 
-      {/* Low Stock */}
-      <div className={`rounded-2xl p-4 border shadow-sm ${stats.lowStockCount > 0 ? 'bg-red-50 border-red-200' : 'bg-white border-gray-100'}`}>
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-gray-500">Low Stock</span>
-          <div className={`p-2 rounded-xl ${stats.lowStockCount > 0 ? 'bg-red-100' : 'bg-gray-50'}`}>
-            <ExclamationTriangleIcon className={`h-5 w-5 ${stats.lowStockCount > 0 ? 'text-red-600' : 'text-gray-400'}`} />
+        {/* Low Stock */}
+        <div className={`rounded-xl p-3 sm:p-4 border shadow-sm ${stats.lowStockCount > 0 ? 'bg-red-50 border-red-200' : 'bg-white border-gray-100'}`}>
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-xs sm:text-sm text-gray-500">Low Stock</span>
+            <div className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl ${stats.lowStockCount > 0 ? 'bg-red-100' : 'bg-gray-50'}`}>
+              <ExclamationTriangleIcon className={`h-4 w-4 sm:h-5 sm:w-5 ${stats.lowStockCount > 0 ? 'text-red-600' : 'text-gray-400'}`} />
+            </div>
           </div>
+          <div className={`text-2xl sm:text-3xl font-bold ${stats.lowStockCount > 0 ? 'text-red-700' : 'text-gray-900'}`}>
+            {stats.lowStockCount}
+          </div>
+          {stats.lowStockCount > 0 && (
+            <span className="text-xs text-red-600 mt-1 block">{stats.lowStockCount} item{stats.lowStockCount > 1 ? 's' : ''}</span>
+          )}
         </div>
-        <div className={`text-3xl font-bold ${stats.lowStockCount > 0 ? 'text-red-700' : 'text-gray-900'}`}>
-          {stats.lowStockCount}
-        </div>
-        {stats.lowStockCount > 0 && (
-          <span className="text-xs text-red-600 mt-1 block">{stats.lowStockCount} item{stats.lowStockCount > 1 ? 's' : ''} low</span>
-        )}
       </div>
     </div>
   )

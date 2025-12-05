@@ -603,15 +603,15 @@ export default function StoreEditor() {
   )
 
   return (
-    <div className="flex h-[calc(100vh-120px)] -m-6">
+    <div className="flex flex-col lg:flex-row lg:h-[calc(100vh-120px)] lg:-m-6">
       {/* Editor Panel */}
-      <div className="w-[420px] flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
+      <div className="w-full lg:w-[420px] flex-shrink-0 bg-white lg:border-r border-gray-200 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="p-3 sm:p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-lg font-bold text-gray-900">Store Editor</h1>
-              <p className="text-xs text-gray-500">Design your perfect storefront</p>
+              <h1 className="text-base sm:text-lg font-bold text-gray-900">Store Editor</h1>
+              <p className="text-xs text-gray-500 hidden sm:block">Design your perfect storefront</p>
             </div>
             <button
               onClick={() => window.open(storeUrl, '_blank')}

@@ -26,7 +26,7 @@ export default function Button({
   return (
     <button
       className={classNames(
-        'font-medium rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center',
+        'font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center active:scale-[0.98]',
         variants[variant],
         sizes[size],
         className

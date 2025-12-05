@@ -71,32 +71,48 @@ export default function Dashboard() {
       )}
 
       <div className={showWelcome ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
+        {/* Header Section */}
         <div className="mb-6">
           <h1 className={`text-xl sm:text-2xl font-bold text-gray-900 ${animateStats ? 'animate-slide-down' : ''}`}>
             Welcome back, {reseller?.store_name || 'Reseller'}!
           </h1>
           {storeUrl && (
-            <div className={`mt-2 flex flex-wrap items-center gap-2 ${animateStats ? 'animate-fade-in' : ''}`} style={{ animationDelay: '100ms' }}>
-              <span className="text-gray-500 text-sm sm:text-base">Your store:</span>
-              <a
-                href={storeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline text-sm sm:text-base break-all"
-              >
-                {storeUrl}
-              </a>
-              <button
-                onClick={copyStoreUrl}
-                className="p-1 hover:bg-gray-100 rounded flex-shrink-0"
-                title="Copy link"
-              >
-                {copied ? (
-                  <CheckIcon className="h-4 w-4 text-green-600" />
-                ) : (
-                  <ClipboardIcon className="h-4 w-4 text-gray-400" />
-                )}
-              </button>
+            <div className={`mt-3 ${animateStats ? 'animate-fade-in' : ''}`} style={{ animationDelay: '100ms' }}>
+              <div className="bg-white rounded-xl p-3 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <span className="text-xs text-gray-500 block mb-1">Your store link</span>
+                    <a
+                      href={storeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline text-sm font-medium truncate block"
+                    >
+                      {storeUrl.replace('https://', '').replace('http://', '')}
+                    </a>
+                  </div>
+                  <button
+                    onClick={copyStoreUrl}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex-shrink-0 ${
+                      copied
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                    }`}
+                  >
+                    {copied ? (
+                      <>
+                        <CheckIcon className="h-4 w-4" />
+                        <span className="hidden sm:inline">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ClipboardIcon className="h-4 w-4" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -106,141 +122,75 @@ export default function Dashboard() {
           <QuickStats />
         </div>
 
-        {/* Stats Grid - Scrollable on mobile for larger cards */}
-        <div className="mb-6 sm:mb-8">
-          {/* Mobile: Horizontal scroll with larger cards */}
-          <div className="sm:hidden -mx-5 px-5">
-            <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
-              <div className="snap-start flex-shrink-0 w-[160px]">
-                <StatsCard
-                  title="Products"
-                  value={loading ? '-' : stats.totalProducts}
-                  numericValue={stats.totalProducts}
-                  icon={CubeIcon}
-                  color="blue"
-                  animate={animateStats}
-                  delay={0}
-                />
-              </div>
-              <div className="snap-start flex-shrink-0 w-[160px]">
-                <StatsCard
-                  title="Orders"
-                  value={loading ? '-' : stats.totalOrders}
-                  numericValue={stats.totalOrders}
-                  icon={ShoppingCartIcon}
-                  color="purple"
-                  animate={animateStats}
-                  delay={100}
-                />
-              </div>
-              <div className="snap-start flex-shrink-0 w-[160px]">
-                <StatsCard
-                  title="Revenue"
-                  value={loading ? '-' : formatCurrency(stats.totalRevenue)}
-                  numericValue={stats.totalRevenue}
-                  isCurrency={true}
-                  icon={CurrencyDollarIcon}
-                  color="blue"
-                  animate={animateStats}
-                  delay={200}
-                />
-              </div>
-              <div className="snap-start flex-shrink-0 w-[160px]">
-                <StatsCard
-                  title="Profit"
-                  value={loading ? '-' : formatCurrency(stats.totalProfit)}
-                  numericValue={stats.totalProfit}
-                  isCurrency={true}
-                  icon={BanknotesIcon}
-                  color="green"
-                  animate={animateStats}
-                  delay={300}
-                />
-              </div>
-              <div className="snap-start flex-shrink-0 w-[160px]">
-                <StatsCard
-                  title="Customers"
-                  value={loading ? '-' : customers.length}
-                  numericValue={customers.length}
-                  icon={UserGroupIcon}
-                  color="orange"
-                  animate={animateStats}
-                  delay={400}
-                />
-              </div>
+        {/* All-time Stats */}
+        <div className="mb-6">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">All Time</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            <StatsCard
+              title="Products"
+              value={loading ? '-' : stats.totalProducts}
+              numericValue={stats.totalProducts}
+              icon={CubeIcon}
+              color="blue"
+              animate={animateStats}
+              delay={0}
+            />
+            <StatsCard
+              title="Orders"
+              value={loading ? '-' : stats.totalOrders}
+              numericValue={stats.totalOrders}
+              icon={ShoppingCartIcon}
+              color="purple"
+              animate={animateStats}
+              delay={100}
+            />
+            <StatsCard
+              title="Revenue"
+              value={loading ? '-' : formatCurrency(stats.totalRevenue)}
+              numericValue={stats.totalRevenue}
+              isCurrency={true}
+              icon={CurrencyDollarIcon}
+              color="blue"
+              animate={animateStats}
+              delay={200}
+            />
+            <StatsCard
+              title="Profit"
+              value={loading ? '-' : formatCurrency(stats.totalProfit)}
+              numericValue={stats.totalProfit}
+              isCurrency={true}
+              icon={BanknotesIcon}
+              color="green"
+              animate={animateStats}
+              delay={300}
+            />
+            <div className="col-span-2 sm:col-span-1">
+              <StatsCard
+                title="Customers"
+                value={loading ? '-' : customers.length}
+                numericValue={customers.length}
+                icon={UserGroupIcon}
+                color="orange"
+                animate={animateStats}
+                delay={400}
+              />
             </div>
-          </div>
-
-          {/* Desktop: Grid layout */}
-          <div className="hidden sm:grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
-                <StatsCard
-                  title="Total Products"
-                  value={loading ? '-' : stats.totalProducts}
-                  numericValue={stats.totalProducts}
-                  icon={CubeIcon}
-                  color="blue"
-                  animate={animateStats}
-                  delay={0}
-                />
-                <StatsCard
-                  title="Total Orders"
-                  value={loading ? '-' : stats.totalOrders}
-                  numericValue={stats.totalOrders}
-                  icon={ShoppingCartIcon}
-                  color="purple"
-                  animate={animateStats}
-                  delay={100}
-                />
-                <StatsCard
-                  title="Total Revenue"
-                  value={loading ? '-' : formatCurrency(stats.totalRevenue)}
-                  numericValue={stats.totalRevenue}
-                  isCurrency={true}
-                  icon={CurrencyDollarIcon}
-                  color="blue"
-                  animate={animateStats}
-                  delay={200}
-                />
-                <StatsCard
-                  title="Total Profit"
-                  value={loading ? '-' : formatCurrency(stats.totalProfit)}
-                  numericValue={stats.totalProfit}
-                  isCurrency={true}
-                  icon={BanknotesIcon}
-                  color="green"
-                  animate={animateStats}
-                  delay={300}
-                />
-                <StatsCard
-                  title="Customers"
-                  value={loading ? '-' : customers.length}
-                  numericValue={customers.length}
-                  icon={UserGroupIcon}
-                  color="orange"
-                  animate={animateStats}
-                  delay={400}
-                />
-              </div>
-            </div>
-            <SalesGoal />
           </div>
         </div>
 
-        {/* Sales Goal on mobile - full width */}
-        <div className="sm:hidden mb-6">
+        {/* Sales Goal */}
+        <div className="mb-6">
           <SalesGoal />
         </div>
 
         {/* Charts */}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '500ms' }}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '500ms' }}>
           <RevenueChart data={salesByDay} />
           <TopProducts productSales={productSales} />
         </div>
 
         {/* Platform Stats */}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 ${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '600ms' }}>
+        <div className={`${animateStats ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '600ms' }}>
           <PlatformStats platformStats={platformStats} />
         </div>
       </div>
