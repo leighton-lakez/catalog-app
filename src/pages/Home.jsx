@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import {
   CubeIcon,
@@ -8,6 +9,13 @@ import {
   CreditCardIcon,
   DevicePhoneMobileIcon,
 } from '@heroicons/react/24/outline'
+
+// Check if running as installed PWA (standalone mode)
+const isStandalone = () => {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true ||
+         document.referrer.includes('android-app://')
+}
 
 const features = [
   {
@@ -44,6 +52,23 @@ const features = [
 
 export default function Home() {
   const { user, loading } = useAuth()
+  const navigate = useNavigate()
+
+  // Auto-redirect to dashboard if running as PWA app
+  useEffect(() => {
+    if (isStandalone() && !loading) {
+      if (user) {
+        navigate('/dashboard', { replace: true })
+      } else {
+        navigate('/login', { replace: true })
+      }
+    }
+  }, [user, loading, navigate])
+
+  // Show nothing while checking PWA status to prevent flash
+  if (isStandalone()) {
+    return null
+  }
 
   return (
     <div className="min-h-screen bg-white">
