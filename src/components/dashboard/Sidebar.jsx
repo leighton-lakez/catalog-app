@@ -74,7 +74,7 @@ export default function Sidebar({ onClose }) {
   const storeUrl = reseller?.store_slug ? `/store/${reseller.store_slug}` : null
 
   return (
-    <div className="flex flex-col w-64 bg-white border-r border-gray-200 min-h-screen">
+    <div className="flex flex-col w-64 bg-white border-r border-gray-200 h-screen max-h-screen overflow-y-auto">
       {/* Header with gradient */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-5">
         <div className="flex items-center justify-between">
@@ -139,7 +139,7 @@ export default function Sidebar({ onClose }) {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-200 space-y-2">
+      <div className="p-4 border-t border-gray-200 space-y-2 flex-shrink-0 pb-safe">
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleDarkMode}
@@ -186,6 +186,9 @@ export default function Sidebar({ onClose }) {
           <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5" />
           Sign Out
         </button>
+
+        {/* Extra padding for iOS safe area */}
+        <div className="h-6 lg:h-0"></div>
       </div>
     </div>
   )
