@@ -116,19 +116,19 @@ export default function PaymentMethodsForm() {
             const methodInfo = PAYMENT_METHODS[method.type]
             return (
               <div key={method.id} className="card">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{methodInfo?.icon}</span>
-                    <div>
-                      <h3 className="font-medium text-gray-900">{methodInfo?.name}</h3>
-                      <p className="text-sm text-gray-500">
+                    <span className="text-xl sm:text-2xl">{methodInfo?.icon}</span>
+                    <div className="min-w-0">
+                      <h3 className="font-medium text-gray-900 text-sm sm:text-base">{methodInfo?.name}</h3>
+                      <p className="text-xs sm:text-sm text-gray-500 truncate">
                         {Object.entries(method.details || {}).map(([key, value]) => (
                           <span key={key}>{value}</span>
                         )).reduce((prev, curr, i) => i === 0 ? [curr] : [...prev, ' • ', curr], [])}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 justify-end">
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
@@ -136,7 +136,7 @@ export default function PaymentMethodsForm() {
                         onChange={() => handleToggleActive(method)}
                         className="sr-only peer"
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      <div className="w-10 sm:w-11 h-5 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 sm:after:h-5 after:w-4 sm:after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                     <button
                       onClick={() => handleDelete(method)}

@@ -14,10 +14,10 @@ export default function TopProducts({ productSales, limit = 5 }) {
 
   if (topProducts.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Products</h3>
-        <div className="h-64 flex flex-col items-center justify-center text-gray-400">
-          <TrophyIcon className="h-12 w-12 mb-3" />
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Top Products</h3>
+        <div className="h-48 sm:h-64 flex flex-col items-center justify-center text-gray-400">
+          <TrophyIcon className="h-10 sm:h-12 w-10 sm:w-12 mb-3" />
           <p className="text-sm">No sales data yet</p>
           <p className="text-xs text-gray-400 mt-1">Your best sellers will appear here</p>
         </div>
@@ -28,32 +28,32 @@ export default function TopProducts({ productSales, limit = 5 }) {
   const maxRevenue = Math.max(...topProducts.map(p => p.revenue))
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Products</h3>
-      <div className="space-y-4">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Top Products</h3>
+      <div className="space-y-3 sm:space-y-4">
         {topProducts.map((product, index) => (
           <div key={product.product_id} className="group">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-3">
-                <span className={`w-7 h-7 rounded-full ${rankColors[index] || 'bg-gray-200'} flex items-center justify-center text-white text-sm font-bold shadow-sm`}>
+            <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                <span className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full ${rankColors[index] || 'bg-gray-200'} flex items-center justify-center text-white text-xs sm:text-sm font-bold shadow-sm flex-shrink-0`}>
                   {index + 1}
                 </span>
-                <span className="font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                <span className="font-medium text-gray-900 text-sm sm:text-base truncate group-hover:text-blue-600 transition-colors">
                   {product.product_name}
                 </span>
               </div>
-              <span className="text-sm font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+              <span className="text-xs sm:text-sm font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 sm:py-1 rounded-full ml-2 flex-shrink-0">
                 {formatCurrency(product.revenue)}
               </span>
             </div>
-            <div className="ml-10">
-              <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+            <div className="ml-8 sm:ml-10">
+              <div className="h-2 sm:h-2.5 bg-gray-100 rounded-full overflow-hidden">
                 <div
                   className={`h-full ${rankColors[index] || 'bg-blue-500'} rounded-full transition-all duration-700 ease-out`}
                   style={{ width: `${(product.revenue / maxRevenue) * 100}%` }}
                 />
               </div>
-              <p className="mt-1.5 text-xs text-gray-500">
+              <p className="mt-1 sm:mt-1.5 text-xs text-gray-500">
                 {product.quantity_sold} units sold
               </p>
             </div>

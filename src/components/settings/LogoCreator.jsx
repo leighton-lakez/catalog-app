@@ -407,19 +407,19 @@ export default function LogoCreator() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-4 sm:mb-6">
         <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
-          <SparklesIcon className="h-6 w-6 text-white" />
+          <SparklesIcon className="h-5 sm:h-6 w-5 sm:w-6 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Logo Creator</h2>
-          <p className="text-gray-500 text-sm">Generate a custom logo for your store</p>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">Logo Creator</h2>
+          <p className="text-gray-500 text-xs sm:text-sm">Generate a custom logo for your store</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Left: Configuration */}
         <div className="space-y-6">
           {/* Business Name */}
@@ -435,19 +435,19 @@ export default function LogoCreator() {
           {/* Logo Style */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Logo Style</label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {LOGO_STYLES.map((style) => (
                 <button
                   key={style.id}
                   onClick={() => setSelectedStyle(style.id)}
-                  className={`p-3 border rounded-lg text-left transition-all ${
+                  className={`p-2 sm:p-3 border rounded-lg text-left transition-all ${
                     selectedStyle === style.id
                       ? 'border-purple-500 bg-purple-50 ring-1 ring-purple-500'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <p className="font-medium text-sm">{style.name}</p>
-                  <p className="text-xs text-gray-500">{style.description}</p>
+                  <p className="font-medium text-xs sm:text-sm">{style.name}</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">{style.description}</p>
                 </button>
               ))}
             </div>
@@ -456,18 +456,18 @@ export default function LogoCreator() {
           {/* Icon Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Logo Type</label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {ICON_TYPES.map((type) => (
                 <button
                   key={type.id}
                   onClick={() => setSelectedIconType(type.id)}
-                  className={`p-3 border rounded-lg text-center transition-all ${
+                  className={`p-2 sm:p-3 border rounded-lg text-center transition-all ${
                     selectedIconType === type.id
                       ? 'border-purple-500 bg-purple-50 ring-1 ring-purple-500'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <p className="font-medium text-sm">{type.name}</p>
+                  <p className="font-medium text-xs sm:text-sm">{type.name}</p>
                 </button>
               ))}
             </div>
@@ -479,19 +479,19 @@ export default function LogoCreator() {
               <SwatchIcon className="h-4 w-4 inline mr-1" />
               Color Scheme
             </label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
               {COLOR_PRESETS.map((preset) => (
                 <button
                   key={preset.id}
                   onClick={() => setSelectedColors(preset)}
-                  className={`relative p-1 rounded-lg transition-all ${
+                  className={`relative p-0.5 sm:p-1 rounded-lg transition-all ${
                     selectedColors.id === preset.id
-                      ? 'ring-2 ring-purple-500 ring-offset-2'
+                      ? 'ring-2 ring-purple-500 ring-offset-1 sm:ring-offset-2'
                       : ''
                   }`}
                   title={preset.name}
                 >
-                  <div className="h-10 rounded-lg overflow-hidden flex">
+                  <div className="h-8 sm:h-10 rounded-lg overflow-hidden flex">
                     <div className="flex-1" style={{ backgroundColor: preset.colors[0] }} />
                     <div className="flex-1" style={{ backgroundColor: preset.colors[1] }} />
                   </div>

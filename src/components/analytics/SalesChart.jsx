@@ -17,12 +17,12 @@ import { ChartBarIcon } from '@heroicons/react/24/outline'
 export function RevenueChart({ data }) {
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Revenue Trend</h3>
-        <div className="h-64 flex flex-col items-center justify-center text-gray-400">
-          <ChartBarIcon className="h-12 w-12 mb-3" />
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Revenue Trend</h3>
+        <div className="h-48 sm:h-64 flex flex-col items-center justify-center text-gray-400">
+          <ChartBarIcon className="h-10 sm:h-12 w-10 sm:w-12 mb-3" />
           <p className="text-sm">No sales data yet</p>
-          <p className="text-xs text-gray-400 mt-1">Revenue will appear here after your first sale</p>
+          <p className="text-xs text-gray-400 mt-1 text-center px-4">Revenue will appear here after your first sale</p>
         </div>
       </div>
     )
@@ -34,9 +34,9 @@ export function RevenueChart({ data }) {
   }))
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Revenue Trend</h3>
-      <div className="h-64">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Revenue Trend</h3>
+      <div className="h-48 sm:h-64">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={formattedData}>
             <defs>
@@ -86,10 +86,10 @@ export function RevenueChart({ data }) {
 export function OrdersChart({ data }) {
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Orders by Day</h3>
-        <div className="h-64 flex flex-col items-center justify-center text-gray-400">
-          <ChartBarIcon className="h-12 w-12 mb-3" />
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Orders by Day</h3>
+        <div className="h-48 sm:h-64 flex flex-col items-center justify-center text-gray-400">
+          <ChartBarIcon className="h-10 sm:h-12 w-10 sm:w-12 mb-3" />
           <p className="text-sm">No orders yet</p>
           <p className="text-xs text-gray-400 mt-1">Order history will appear here</p>
         </div>
@@ -103,9 +103,9 @@ export function OrdersChart({ data }) {
   }))
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Orders by Day</h3>
-      <div className="h-64">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Orders by Day</h3>
+      <div className="h-48 sm:h-64">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={formattedData}>
             <defs>
