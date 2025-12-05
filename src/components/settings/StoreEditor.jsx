@@ -642,7 +642,7 @@ export default function StoreEditor() {
         </div>
 
         {/* Editor Content */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4">
           {activeSection === 'info' && (
             <>
               {/* Store URL */}
@@ -1098,7 +1098,7 @@ export default function StoreEditor() {
         </form>
 
         {/* Save Button */}
-        <div className="p-4 border-t border-gray-200 bg-gray-50">
+        <div className="p-3 sm:p-4 border-t border-gray-200 bg-gray-50">
           {message && (
             <div className={`mb-3 p-2 rounded-lg text-xs font-medium text-center ${
               messageType === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
@@ -1112,8 +1112,8 @@ export default function StoreEditor() {
         </div>
       </div>
 
-      {/* Preview Panel */}
-      <div className="flex-1 flex flex-col" style={{ backgroundColor: formData.background_color }}>
+      {/* Preview Panel - Hidden on mobile */}
+      <div className="hidden lg:flex flex-1 flex-col" style={{ backgroundColor: formData.background_color }}>
         {/* Preview Controls */}
         <div className="p-3 bg-white border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center gap-2">

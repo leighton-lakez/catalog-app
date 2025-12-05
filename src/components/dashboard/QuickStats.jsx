@@ -100,13 +100,16 @@ export default function QuickStats() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-white rounded-2xl p-4 border animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-20 mb-3" />
-            <div className="h-8 bg-gray-200 rounded w-16" />
-          </div>
-        ))}
+      <div>
+        <div className="h-4 bg-gray-200 rounded w-16 mb-3" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-white rounded-xl p-3 sm:p-4 border animate-pulse">
+              <div className="h-3 sm:h-4 bg-gray-200 rounded w-16 mb-2 sm:mb-3" />
+              <div className="h-6 sm:h-8 bg-gray-200 rounded w-12" />
+            </div>
+          ))}
+        </div>
       </div>
     )
   }

@@ -77,13 +77,13 @@ export default function PaymentMethodsForm() {
 
   return (
     <div className="max-w-2xl">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Payment Methods</h2>
-          <p className="text-sm text-gray-500">Add the payment methods you accept</p>
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Payment Methods</h2>
+          <p className="text-xs sm:text-sm text-gray-500">Add the payment methods you accept</p>
         </div>
         {availableTypes.length > 0 && (
-          <Button onClick={handleOpenModal}>
+          <Button onClick={handleOpenModal} className="w-full sm:w-auto">
             <PlusIcon className="h-5 w-5 mr-1" />
             Add Method
           </Button>
