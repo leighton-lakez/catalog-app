@@ -99,7 +99,7 @@ export default function Products() {
   return (
     <div>
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200">
+      <div className="flex gap-1 sm:gap-2 mb-6 border-b border-gray-200 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -107,14 +107,14 @@ export default function Products() {
               setActiveTab(tab.id)
               if (tab.id === 'categories') setFilterCategory(null)
             }}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === tab.id
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
           >
             <tab.icon className="h-5 w-5" />
-            {tab.name}
+            <span className="hidden sm:inline">{tab.name}</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               activeTab === tab.id ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
             }`}>

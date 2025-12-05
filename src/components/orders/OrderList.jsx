@@ -77,36 +77,37 @@ export default function OrderList({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Orders</h1>
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           {deletedOrders.length > 0 && (
             <button
               onClick={() => setShowDeletedOrders(!showDeletedOrders)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
+              className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg border transition-colors text-sm ${
                 showDeletedOrders
                   ? 'bg-red-50 border-red-200 text-red-700'
                   : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <ArchiveBoxIcon className="h-5 w-5" />
-              Deleted ({deletedOrders.length})
+              <ArchiveBoxIcon className="h-4 sm:h-5 w-4 sm:w-5" />
+              <span className="hidden sm:inline">Deleted</span> ({deletedOrders.length})
             </button>
           )}
-          <Button onClick={() => setIsCreateModalOpen(true)}>
-            <PlusIcon className="h-5 w-5 mr-1" />
-            Add Order
+          <Button onClick={() => setIsCreateModalOpen(true)} className="text-sm">
+            <PlusIcon className="h-5 w-5 sm:mr-1" />
+            <span className="hidden sm:inline">Add Order</span>
+            <span className="sm:hidden">Add</span>
           </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="flex-1 relative">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search by customer name, phone, or email..."
+            placeholder="Search customers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -115,7 +116,7 @@ export default function OrderList({
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
         >
           <option value="">All Statuses</option>
           {Object.entries(ORDER_STATUSES).map(([key, { label }]) => (
@@ -152,88 +153,127 @@ export default function OrderList({
           }
         />
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Customer
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Items
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Total
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredOrders.map((order) => (
-                <tr
-                  key={order.id}
-                  onClick={() => setSelectedOrder(order)}
-                  className="hover:bg-gray-50 cursor-pointer"
+        <>
+        {/* Mobile Card View */}
+        <div className="sm:hidden space-y-3">
+          {filteredOrders.map((order) => (
+            <div
+              key={order.id}
+              onClick={() => setSelectedOrder(order)}
+              className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-blue-300"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <div className="font-medium text-gray-900">{order.customer_name}</div>
+                  <div className="text-sm text-gray-500">{order.customer_phone}</div>
+                </div>
+                <OrderStatusBadge status={order.status} />
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">{order.order_items?.length || 0} items</span>
+                <span className="font-semibold text-gray-900">{formatCurrency(order.total_amount)}</span>
+              </div>
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+                <span className="text-xs text-gray-400">{formatDateTime(order.created_at)}</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setDeleteConfirm(order)
+                  }}
+                  className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                 >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">{order.customer_name}</div>
-                    <div className="text-sm text-gray-500">{order.customer_phone}</div>
-                    {/* Display tags */}
-                    {order.tags && (
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {(typeof order.tags === 'string' ? JSON.parse(order.tags) : order.tags).slice(0, 2).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium ${TAG_COLORS[tag.color] || TAG_COLORS.blue}`}
-                          >
-                            {tag.name}
-                          </span>
-                        ))}
-                        {(typeof order.tags === 'string' ? JSON.parse(order.tags) : order.tags).length > 2 && (
-                          <span className="text-xs text-gray-400">+{(typeof order.tags === 'string' ? JSON.parse(order.tags) : order.tags).length - 2}</span>
-                        )}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.order_items?.length || 0} items
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="font-medium text-gray-900">
-                      {formatCurrency(order.total_amount)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <OrderStatusBadge status={order.status} />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {formatDateTime(order.created_at)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setDeleteConfirm(order)
-                      }}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete order"
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  <TrashIcon className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden sm:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Customer
+                  </th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Items
+                  </th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Total
+                  </th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                    Date
+                  </th>
+                  <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredOrders.map((order) => (
+                  <tr
+                    key={order.id}
+                    onClick={() => setSelectedOrder(order)}
+                    className="hover:bg-gray-50 cursor-pointer"
+                  >
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <div className="font-medium text-gray-900">{order.customer_name}</div>
+                      <div className="text-sm text-gray-500">{order.customer_phone}</div>
+                      {order.tags && (
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {(typeof order.tags === 'string' ? JSON.parse(order.tags) : order.tags).slice(0, 2).map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium ${TAG_COLORS[tag.color] || TAG_COLORS.blue}`}
+                            >
+                              {tag.name}
+                            </span>
+                          ))}
+                          {(typeof order.tags === 'string' ? JSON.parse(order.tags) : order.tags).length > 2 && (
+                            <span className="text-xs text-gray-400">+{(typeof order.tags === 'string' ? JSON.parse(order.tags) : order.tags).length - 2}</span>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {order.order_items?.length || 0} items
+                    </td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <span className="font-medium text-gray-900">
+                        {formatCurrency(order.total_amount)}
+                      </span>
+                    </td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <OrderStatusBadge status={order.status} />
+                    </td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden lg:table-cell">
+                      {formatDateTime(order.created_at)}
+                    </td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setDeleteConfirm(order)
+                        }}
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Delete order"
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </>
       )}
 
       {/* Order Detail Modal */}

@@ -170,14 +170,14 @@ export default function Bundles() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Product Bundles</h1>
-          <p className="text-gray-500 mt-1">
-            Create product bundles with special pricing
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Product Bundles</h1>
+          <p className="text-gray-500 text-sm sm:text-base mt-1">
+            Create bundles with special pricing
           </p>
         </div>
-        <Button onClick={() => openModal()}>
+        <Button onClick={() => openModal()} className="w-full sm:w-auto">
           <PlusIcon className="h-5 w-5 mr-1" />
           Create Bundle
         </Button>

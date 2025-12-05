@@ -146,19 +146,20 @@ export default function ProductList({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" onClick={handleExport}>
-            <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
-            Export
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Products</h1>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button variant="secondary" onClick={handleExport} className="text-sm">
+            <ArrowDownTrayIcon className="h-4 w-4 sm:mr-1" />
+            <span className="hidden sm:inline">Export</span>
           </Button>
-          <Button variant="secondary" onClick={() => setBulkMode(!bulkMode)}>
-            {bulkMode ? 'Cancel' : 'Bulk Edit'}
+          <Button variant="secondary" onClick={() => setBulkMode(!bulkMode)} className="text-sm">
+            {bulkMode ? 'Cancel' : <><span className="hidden sm:inline">Bulk Edit</span><span className="sm:hidden">Bulk</span></>}
           </Button>
-          <Button onClick={() => handleOpenModal()}>
-            <PlusIcon className="h-5 w-5 mr-1" />
-            Add Product
+          <Button onClick={() => handleOpenModal()} className="text-sm">
+            <PlusIcon className="h-5 w-5 sm:mr-1" />
+            <span className="hidden sm:inline">Add Product</span>
+            <span className="sm:hidden">Add</span>
           </Button>
         </div>
       </div>
@@ -199,7 +200,7 @@ export default function ProductList({
       )}
 
       {/* Filters */}
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="flex-1 relative">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <input
@@ -213,7 +214,7 @@ export default function ProductList({
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
         >
           <option value="">All Categories</option>
           {categories.map(cat => (

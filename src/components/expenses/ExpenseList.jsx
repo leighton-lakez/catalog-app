@@ -116,37 +116,37 @@ export default function ExpenseList({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Business Expenses</h1>
-        <Button onClick={() => handleOpenModal()}>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Business Expenses</h1>
+        <Button onClick={() => handleOpenModal()} className="text-sm w-full sm:w-auto">
           <PlusIcon className="h-5 w-5 mr-1" />
           Add Expense
         </Button>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-5 text-white">
-          <p className="text-blue-100 text-sm">Total Revenue</p>
-          <p className="text-2xl font-bold mt-1">{formatCurrency(totalRevenue)}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-3 sm:p-5 text-white">
+          <p className="text-blue-100 text-xs sm:text-sm">Total Revenue</p>
+          <p className="text-lg sm:text-2xl font-bold mt-1">{formatCurrency(totalRevenue)}</p>
         </div>
-        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-5 text-white">
-          <p className="text-orange-100 text-sm">Product Costs</p>
-          <p className="text-2xl font-bold mt-1">{formatCurrency(totalProductCost)}</p>
+        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-3 sm:p-5 text-white">
+          <p className="text-orange-100 text-xs sm:text-sm">Product Costs</p>
+          <p className="text-lg sm:text-2xl font-bold mt-1">{formatCurrency(totalProductCost)}</p>
         </div>
-        <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-5 text-white">
-          <p className="text-red-100 text-sm">Business Expenses</p>
-          <p className="text-2xl font-bold mt-1">{formatCurrency(totalExpenses)}</p>
+        <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-3 sm:p-5 text-white">
+          <p className="text-red-100 text-xs sm:text-sm">Expenses</p>
+          <p className="text-lg sm:text-2xl font-bold mt-1">{formatCurrency(totalExpenses)}</p>
           {recurringMonthly > 0 && (
-            <p className="text-red-200 text-xs mt-1 flex items-center gap-1">
+            <p className="text-red-200 text-xs mt-1 hidden sm:flex items-center gap-1">
               <ArrowPathIcon className="h-3 w-3" />
-              {formatCurrency(recurringMonthly)}/mo recurring
+              {formatCurrency(recurringMonthly)}/mo
             </p>
           )}
         </div>
-        <div className={`bg-gradient-to-br ${netProfit >= 0 ? 'from-green-500 to-green-600' : 'from-gray-600 to-gray-700'} rounded-xl p-5 text-white`}>
-          <p className={netProfit >= 0 ? 'text-green-100' : 'text-gray-300'} >Net Profit</p>
-          <p className="text-2xl font-bold mt-1">{formatCurrency(netProfit)}</p>
+        <div className={`bg-gradient-to-br ${netProfit >= 0 ? 'from-green-500 to-green-600' : 'from-gray-600 to-gray-700'} rounded-xl p-3 sm:p-5 text-white`}>
+          <p className={`text-xs sm:text-sm ${netProfit >= 0 ? 'text-green-100' : 'text-gray-300'}`}>Net Profit</p>
+          <p className="text-lg sm:text-2xl font-bold mt-1">{formatCurrency(netProfit)}</p>
         </div>
       </div>
 
@@ -154,7 +154,7 @@ export default function ExpenseList({
       {Object.keys(expensesByCategory).length > 0 && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Expenses by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
             {Object.entries(expensesByCategory).map(([category, amount]) => {
               const Icon = categoryIcons[category] || EllipsisHorizontalCircleIcon
               return (

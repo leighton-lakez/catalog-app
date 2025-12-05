@@ -68,14 +68,14 @@ export default function Reviews() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Product Reviews</h1>
-          <p className="text-gray-500 mt-1">
-            Manage customer reviews for your products
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Product Reviews</h1>
+          <p className="text-gray-500 text-sm sm:text-base mt-1">
+            Manage customer reviews
             {pendingCount > 0 && (
-              <span className="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full text-sm">
-                {pendingCount} pending approval
+              <span className="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full text-xs sm:text-sm">
+                {pendingCount} pending
               </span>
             )}
           </p>
@@ -83,10 +83,10 @@ export default function Reviews() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         <button
           onClick={() => setFilter('all')}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
             filter === 'all'
               ? 'bg-blue-100 text-blue-700'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -96,7 +96,7 @@ export default function Reviews() {
         </button>
         <button
           onClick={() => setFilter('pending')}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
             filter === 'pending'
               ? 'bg-yellow-100 text-yellow-700'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -106,7 +106,7 @@ export default function Reviews() {
         </button>
         <button
           onClick={() => setFilter('approved')}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
             filter === 'approved'
               ? 'bg-green-100 text-green-700'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -135,10 +135,10 @@ export default function Reviews() {
                 !review.is_approved ? 'border-yellow-200 bg-yellow-50' : ''
               }`}
             >
-              <div className="flex items-start justify-between">
-                <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                <div className="flex gap-3 sm:gap-4 flex-1">
                   {/* Product image */}
-                  <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     {review.products?.image_url ? (
                       <img
                         src={review.products.image_url}
@@ -152,48 +152,46 @@ export default function Reviews() {
                     )}
                   </div>
 
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
                       {renderStars(review.rating)}
                       {!review.is_approved && (
                         <span className="px-2 py-0.5 bg-yellow-200 text-yellow-800 text-xs font-medium rounded-full">
-                          Pending Approval
+                          Pending
                         </span>
                       )}
                       {review.is_verified_purchase && (
-                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                          Verified Purchase
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full hidden sm:inline">
+                          Verified
                         </span>
                       )}
                     </div>
 
-                    <p className="text-sm text-gray-500 mb-2">
+                    <p className="text-xs sm:text-sm text-gray-500 mb-2">
                       <span className="font-medium text-gray-900">{review.customer_name}</span>
-                      {' · '}
-                      <span>{review.products?.name}</span>
-                      {' · '}
-                      <span>{formatDate(review.created_at)}</span>
+                      <span className="hidden sm:inline"> · {review.products?.name}</span>
+                      <span className="sm:hidden block text-xs">{review.products?.name}</span>
                     </p>
 
                     {review.title && (
-                      <h4 className="font-medium text-gray-900 mb-1">{review.title}</h4>
+                      <h4 className="font-medium text-gray-900 text-sm sm:text-base mb-1">{review.title}</h4>
                     )}
 
                     {review.review && (
-                      <p className="text-gray-700">{review.review}</p>
+                      <p className="text-gray-700 text-sm">{review.review}</p>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 sm:flex-shrink-0">
                   {!review.is_approved && (
                     <Button
                       size="sm"
                       onClick={() => handleApprove(review.id)}
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none"
                     >
-                      <CheckIcon className="h-4 w-4 mr-1" />
-                      Approve
+                      <CheckIcon className="h-4 w-4 sm:mr-1" />
+                      <span className="sm:inline">Approve</span>
                     </Button>
                   )}
                   <button

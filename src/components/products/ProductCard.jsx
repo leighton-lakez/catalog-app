@@ -69,9 +69,9 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Action buttons */}
+        {/* Action buttons - always visible on mobile, hover on desktop */}
         {!bulkMode && (
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+          <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex gap-1">
             <button
               onClick={(e) => { e.stopPropagation(); onDuplicate?.(product) }}
               className="p-2 bg-white rounded-lg shadow hover:bg-gray-50"
