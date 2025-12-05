@@ -18,12 +18,12 @@ export default function ProductCard({
 
   return (
     <div
-      className={`card group hover:shadow-md transition-all ${
+      className={`bg-white rounded-2xl border border-gray-100 shadow-sm p-3 sm:p-4 group hover:shadow-lg transition-all duration-200 ${
         isSelected ? 'ring-2 ring-blue-500 bg-blue-50' : ''
       } ${bulkMode ? 'cursor-pointer' : ''}`}
       onClick={bulkMode ? onToggleSelect : undefined}
     >
-      <div className="relative aspect-square mb-4 bg-gray-100 rounded-lg overflow-hidden">
+      <div className="relative aspect-square mb-3 bg-gray-50 rounded-xl overflow-hidden">
         {product.image_url ? (
           <img
             src={product.image_url}

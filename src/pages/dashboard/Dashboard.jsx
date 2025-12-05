@@ -106,59 +106,130 @@ export default function Dashboard() {
           <QuickStats />
         </div>
 
-        {/* Sales Goal + Stats Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="lg:col-span-2">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-              <StatsCard
-                title="Total Products"
-                value={loading ? '-' : stats.totalProducts}
-                numericValue={stats.totalProducts}
-                icon={CubeIcon}
-                color="blue"
-                animate={animateStats}
-                delay={0}
-              />
-              <StatsCard
-                title="Total Orders"
-                value={loading ? '-' : stats.totalOrders}
-                numericValue={stats.totalOrders}
-                icon={ShoppingCartIcon}
-                color="purple"
-                animate={animateStats}
-                delay={100}
-              />
-              <StatsCard
-                title="Total Revenue"
-                value={loading ? '-' : formatCurrency(stats.totalRevenue)}
-                numericValue={stats.totalRevenue}
-                isCurrency={true}
-                icon={CurrencyDollarIcon}
-                color="blue"
-                animate={animateStats}
-                delay={200}
-              />
-              <StatsCard
-                title="Total Profit"
-                value={loading ? '-' : formatCurrency(stats.totalProfit)}
-                numericValue={stats.totalProfit}
-                isCurrency={true}
-                icon={BanknotesIcon}
-                color="green"
-                animate={animateStats}
-                delay={300}
-              />
-              <StatsCard
-                title="Customers"
-                value={loading ? '-' : customers.length}
-                numericValue={customers.length}
-                icon={UserGroupIcon}
-                color="orange"
-                animate={animateStats}
-                delay={400}
-              />
+        {/* Stats Grid - Scrollable on mobile for larger cards */}
+        <div className="mb-6 sm:mb-8">
+          {/* Mobile: Horizontal scroll with larger cards */}
+          <div className="sm:hidden -mx-5 px-5">
+            <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+              <div className="snap-start flex-shrink-0 w-[160px]">
+                <StatsCard
+                  title="Products"
+                  value={loading ? '-' : stats.totalProducts}
+                  numericValue={stats.totalProducts}
+                  icon={CubeIcon}
+                  color="blue"
+                  animate={animateStats}
+                  delay={0}
+                />
+              </div>
+              <div className="snap-start flex-shrink-0 w-[160px]">
+                <StatsCard
+                  title="Orders"
+                  value={loading ? '-' : stats.totalOrders}
+                  numericValue={stats.totalOrders}
+                  icon={ShoppingCartIcon}
+                  color="purple"
+                  animate={animateStats}
+                  delay={100}
+                />
+              </div>
+              <div className="snap-start flex-shrink-0 w-[160px]">
+                <StatsCard
+                  title="Revenue"
+                  value={loading ? '-' : formatCurrency(stats.totalRevenue)}
+                  numericValue={stats.totalRevenue}
+                  isCurrency={true}
+                  icon={CurrencyDollarIcon}
+                  color="blue"
+                  animate={animateStats}
+                  delay={200}
+                />
+              </div>
+              <div className="snap-start flex-shrink-0 w-[160px]">
+                <StatsCard
+                  title="Profit"
+                  value={loading ? '-' : formatCurrency(stats.totalProfit)}
+                  numericValue={stats.totalProfit}
+                  isCurrency={true}
+                  icon={BanknotesIcon}
+                  color="green"
+                  animate={animateStats}
+                  delay={300}
+                />
+              </div>
+              <div className="snap-start flex-shrink-0 w-[160px]">
+                <StatsCard
+                  title="Customers"
+                  value={loading ? '-' : customers.length}
+                  numericValue={customers.length}
+                  icon={UserGroupIcon}
+                  color="orange"
+                  animate={animateStats}
+                  delay={400}
+                />
+              </div>
             </div>
           </div>
+
+          {/* Desktop: Grid layout */}
+          <div className="hidden sm:grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
+                <StatsCard
+                  title="Total Products"
+                  value={loading ? '-' : stats.totalProducts}
+                  numericValue={stats.totalProducts}
+                  icon={CubeIcon}
+                  color="blue"
+                  animate={animateStats}
+                  delay={0}
+                />
+                <StatsCard
+                  title="Total Orders"
+                  value={loading ? '-' : stats.totalOrders}
+                  numericValue={stats.totalOrders}
+                  icon={ShoppingCartIcon}
+                  color="purple"
+                  animate={animateStats}
+                  delay={100}
+                />
+                <StatsCard
+                  title="Total Revenue"
+                  value={loading ? '-' : formatCurrency(stats.totalRevenue)}
+                  numericValue={stats.totalRevenue}
+                  isCurrency={true}
+                  icon={CurrencyDollarIcon}
+                  color="blue"
+                  animate={animateStats}
+                  delay={200}
+                />
+                <StatsCard
+                  title="Total Profit"
+                  value={loading ? '-' : formatCurrency(stats.totalProfit)}
+                  numericValue={stats.totalProfit}
+                  isCurrency={true}
+                  icon={BanknotesIcon}
+                  color="green"
+                  animate={animateStats}
+                  delay={300}
+                />
+                <StatsCard
+                  title="Customers"
+                  value={loading ? '-' : customers.length}
+                  numericValue={customers.length}
+                  icon={UserGroupIcon}
+                  color="orange"
+                  animate={animateStats}
+                  delay={400}
+                />
+              </div>
+            </div>
+            <SalesGoal />
+          </div>
+        </div>
+
+        {/* Sales Goal on mobile - full width */}
+        <div className="sm:hidden mb-6">
           <SalesGoal />
         </div>
 

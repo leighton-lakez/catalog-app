@@ -17,7 +17,7 @@ export function useAnalytics() {
     try {
       setLoading(true)
 
-      // Fetch orders with items
+      // Fetch orders with items (exclude deleted orders)
       const { data: ordersData, error: ordersError } = await supabase
         .from('orders')
         .select(`
@@ -25,6 +25,7 @@ export function useAnalytics() {
           order_items(*)
         `)
         .eq('reseller_id', user.id)
+        .is('deleted_at', null)
         .order('created_at', { ascending: false })
 
       if (ordersError) throw ordersError
