@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext } from 'react'
+import { useState, useEffect, createContext, useContext, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext({})
@@ -8,33 +8,96 @@ export function AuthProvider({ children }) {
   const [reseller, setReseller] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const fetchOrCreateReseller = useCallback(async (authUser, retries = 3) => {
+    if (!authUser) return null
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        // Try to fetch existing reseller profile
+        const { data, error } = await supabase
+          .from('resellers')
+          .select('*')
+          .eq('id', authUser.id)
+          .maybeSingle()
+
+        if (data) {
+          setReseller(data)
+          return data
+        }
+
+        if (!data && (!error || error.code === 'PGRST116')) {
+          // No profile found - create one
+          const storeName = authUser.user_metadata?.store_name || 'My Store'
+          const storeSlug = authUser.user_metadata?.store_slug ||
+            'store-' + authUser.id.substring(0, 8) + '-' + Date.now().toString(36)
+
+          const { data: newReseller, error: createError } = await supabase
+            .from('resellers')
+            .insert({
+              id: authUser.id,
+              store_name: storeName,
+              store_slug: storeSlug,
+            })
+            .select()
+            .maybeSingle()
+
+          if (createError) {
+            // If insert fails due to conflict, try fetching again
+            if (createError.code === '23505') {
+              const { data: existingReseller } = await supabase
+                .from('resellers')
+                .select('*')
+                .eq('id', authUser.id)
+                .maybeSingle()
+
+              if (existingReseller) {
+                setReseller(existingReseller)
+                return existingReseller
+              }
+            }
+            console.error('Error creating reseller profile:', createError)
+          } else if (newReseller) {
+            setReseller(newReseller)
+            return newReseller
+          }
+        } else if (error) {
+          throw error
+        }
+      } catch (error) {
+        console.error(`Reseller fetch attempt ${attempt} failed:`, error)
+        if (attempt < retries) {
+          // Wait before retrying
+          await new Promise(resolve => setTimeout(resolve, 500 * attempt))
+        }
+      }
+    }
+    return null
+  }, [])
+
   useEffect(() => {
     let mounted = true
 
-    // Get initial session with timeout
+    // Get initial session
     const initAuth = async () => {
-      // Set a maximum timeout of 5 seconds
-      const timeout = setTimeout(() => {
-        if (mounted && loading) {
-          console.warn('Auth initialization timed out')
-          setLoading(false)
-        }
-      }, 5000)
-
       try {
-        const { data: { session } } = await supabase.auth.getSession()
+        const { data: { session }, error } = await supabase.auth.getSession()
+
+        if (error) {
+          console.error('Error getting session:', error)
+        }
 
         if (!mounted) return
 
-        setUser(session?.user ?? null)
-
         if (session?.user) {
+          setUser(session.user)
           await fetchOrCreateReseller(session.user)
+        } else {
+          setUser(null)
+          setReseller(null)
         }
       } catch (error) {
         console.error('Auth init error:', error)
       } finally {
-        clearTimeout(timeout)
         if (mounted) {
           setLoading(false)
         }
@@ -48,12 +111,14 @@ export function AuthProvider({ children }) {
       async (event, session) => {
         if (!mounted) return
 
-        setUser(session?.user ?? null)
+        console.log('Auth state changed:', event)
 
         if (session?.user) {
-          // Don't await - let it run in background
+          setUser(session.user)
+          // Fetch reseller in background, don't block
           fetchOrCreateReseller(session.user)
         } else {
+          setUser(null)
           setReseller(null)
         }
         setLoading(false)
@@ -64,51 +129,7 @@ export function AuthProvider({ children }) {
       mounted = false
       subscription.unsubscribe()
     }
-  }, [])
-
-  const fetchOrCreateReseller = async (authUser) => {
-    try {
-      // Try to fetch existing reseller profile
-      const { data, error } = await supabase
-        .from('resellers')
-        .select('*')
-        .eq('id', authUser.id)
-        .maybeSingle()
-
-      if (data) {
-        setReseller(data)
-      } else if (!data && (!error || error.code === 'PGRST116')) {
-        // No profile found - try to create one
-        const storeName = authUser.user_metadata?.store_name || 'My Store'
-        const storeSlug = authUser.user_metadata?.store_slug ||
-          'store-' + authUser.id.substring(0, 8) + '-' + Date.now().toString(36)
-
-        const { data: newReseller, error: createError } = await supabase
-          .from('resellers')
-          .insert({
-            id: authUser.id,
-            store_name: storeName,
-            store_slug: storeSlug,
-          })
-          .select()
-          .maybeSingle()
-
-        if (createError) {
-          console.error('Error creating reseller profile:', createError)
-        } else if (newReseller) {
-          setReseller(newReseller)
-        }
-      } else if (error) {
-        console.error('Error fetching reseller:', error)
-      }
-    } catch (error) {
-      if (error.name === 'AbortError') {
-        console.warn('Reseller fetch timed out')
-      } else {
-        console.error('Error in fetchOrCreateReseller:', error)
-      }
-    }
-  }
+  }, [fetchOrCreateReseller])
 
   const signUp = async (email, password, storeName) => {
     const slug = storeName
@@ -132,22 +153,36 @@ export function AuthProvider({ children }) {
   }
 
   const signIn = async (email, password) => {
+    // Clear any stale state first
+    setUser(null)
+    setReseller(null)
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
     if (error) throw error
+
+    // Immediately set user and fetch reseller
+    if (data.user) {
+      setUser(data.user)
+      await fetchOrCreateReseller(data.user)
+    }
+
     return data
   }
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (error) throw error
+    setUser(null)
     setReseller(null)
   }
 
   const updateReseller = async (updates) => {
+    if (!user) throw new Error('No user logged in')
+
     const { data, error } = await supabase
       .from('resellers')
       .update(updates)
