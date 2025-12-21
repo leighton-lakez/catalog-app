@@ -18,6 +18,7 @@ import {
   SunIcon,
   MoonIcon,
   XMarkIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline'
 import { classNames } from '../../lib/utils'
 
@@ -140,6 +141,17 @@ export default function Sidebar({ onClose }) {
       </nav>
 
       <div className="p-4 border-t border-gray-200 space-y-2 flex-shrink-0 pb-safe">
+        {/* Admin Panel Link - Only for admins */}
+        {reseller?.is_admin && (
+          <NavLink
+            to="/admin"
+            className="flex items-center px-3 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg transition-all duration-200 shadow-sm"
+          >
+            <ShieldCheckIcon className="mr-3 h-5 w-5" />
+            Admin Panel
+          </NavLink>
+        )}
+
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleDarkMode}

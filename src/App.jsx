@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
 import { UndoProvider } from './components/ui/UndoToast'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import AdminProtectedRoute from './components/auth/AdminProtectedRoute'
 import DashboardLayout from './components/dashboard/DashboardLayout'
+import AdminLayout from './components/admin/AdminLayout'
 import PWAInstallPrompt from './components/ui/PWAInstallPrompt'
 
 // Public pages
@@ -23,6 +25,14 @@ import StoreBuilderPage from './pages/dashboard/StoreBuilderPage'
 import DiscountCodes from './pages/dashboard/DiscountCodes'
 import Reviews from './pages/dashboard/Reviews'
 import Bundles from './pages/dashboard/Bundles'
+
+// Admin pages
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminOrders from './pages/admin/AdminOrders'
+import AdminProducts from './pages/admin/AdminProducts'
+import AdminAnalytics from './pages/admin/AdminAnalytics'
+import AdminSettings from './pages/admin/AdminSettings'
 
 // Storefront pages
 import Store from './pages/storefront/Store'
@@ -62,6 +72,23 @@ function App() {
             <Route path="discounts" element={<DiscountCodes />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="bundles" element={<Bundles />} />
+          </Route>
+
+          {/* Admin routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout />
+              </AdminProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="analytics" element={<AdminAnalytics />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
 
           {/* Public storefront routes */}
